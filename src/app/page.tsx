@@ -1,69 +1,104 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { sectors } from "@/data/sectors";
+
+// Rough polygons — will be replaced with traced coordinates later
+// Format: viewBox is 0 0 2718 1536 (matches overview.jpg dimensions)
+const hotspots: Record<number, { points: string; labelX: number; labelY: number }> = {
+   1: {
+    points: "383,1203 223,1203 9,1039 9,853 233,1007 477,977 713,993 865,1023 897,1307 640,1255",
+    labelX: 450,
+    labelY: 1080,
+  },
+    2: {
+    points: "900,1305 943,1393 1049,1477 1217,1529 1335,1529 1423,1497 1117,657 961,609 785,597",
+    labelX: 1100,
+    labelY: 1050,
+  },
+  3: {
+    points:
+      "880,60 1200,55 1500,55 1780,75 2020,120 2200,200 2260,340 2230,470 2140,510 1800,520 1450,500 1150,470 950,440 885,360 875,220",
+    labelX: 1520,
+    labelY: 280,
+  },
+};
 
 export default function Home() {
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="relative w-full h-screen overflow-hidden">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/overview.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none" />
+
+      {/* Logo */}
+      <header className="absolute top-6 left-8 z-20 pointer-events-none">
+        <img src="/images/logo.png" alt="Niabi's Manor" className="h-20" />
+      </header>
+
+      {/* Interactive map layer */}
+      <svg
+        viewBox="0 0 2718 1536"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 w-full h-full"
+      >
+        {sectors.map((sector) => {
+          const hotspot = hotspots[sector.id];
+          if (!hotspot) return null;
+          const isHovered = hovered === sector.id;
+
+          return (
+            <g key={sector.id}>
+              <Link href={`/sector/${sector.id}`}>
+                <polygon
+                  points={hotspot.points}
+                  className="cursor-pointer transition-all duration-300"
+                  style={{
+                    fill: isHovered ? "rgba(184, 145, 47, 0.25)" : "rgba(184, 145, 47, 0)",
+                    stroke: isHovered ? "rgba(212, 178, 86, 1)" : "rgba(212, 178, 86, 0)",
+                    strokeWidth: 4,
+                  }}
+                  onMouseEnter={() => setHovered(sector.id)}
+                  onMouseLeave={() => setHovered(null)}
+                />
+              </Link>
+
+              {/* Label appears on hover */}
+              {isHovered && (
+                <g className="pointer-events-none">
+                  <rect
+                    x={hotspot.labelX - 130}
+                    y={hotspot.labelY - 32}
+                    width={260}
+                    height={64}
+                    rx={32}
+                    fill="rgba(14, 21, 16, 0.85)"
+                    stroke="rgba(212, 178, 86, 0.6)"
+                    strokeWidth={2}
+                  />
+                  <text
+                    x={hotspot.labelX}
+                    y={hotspot.labelY + 10}
+                    textAnchor="middle"
+                    fill="#d4b256"
+                    fontSize={28}
+                    fontWeight={500}
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    {sector.nameKa}
+                  </text>
+                </g>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </main>
   );
 }
