@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import WeatherWidget from "@/components/WeatherWidget";
 
 export default function Home() {
   const router = useRouter();
@@ -45,15 +44,6 @@ export default function Home() {
         <span className="text-[10px] tracking-[0.5em] uppercase text-[var(--gold)]">
           Georgia
         </span>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
-        className="absolute top-10 right-12 z-20"
-      >
-        <WeatherWidget />
       </motion.div>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center px-8 z-10">
