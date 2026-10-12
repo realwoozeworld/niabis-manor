@@ -1,104 +1,156 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { sectors } from "@/data/sectors";
-
-// Rough polygons — will be replaced with traced coordinates later
-// Format: viewBox is 0 0 2718 1536 (matches overview.jpg dimensions)
-const hotspots: Record<number, { points: string; labelX: number; labelY: number }> = {
-   1: {
-    points: "383,1203 223,1203 9,1039 9,853 233,1007 477,977 713,993 865,1023 897,1307 640,1255",
-    labelX: 450,
-    labelY: 1080,
-  },
-    2: {
-    points: "900,1305 943,1393 1049,1477 1217,1529 1335,1529 1423,1497 1117,657 961,609 785,597",
-    labelX: 1100,
-    labelY: 1050,
-  },
-  3: {
-    points:
-      "880,60 1200,55 1500,55 1780,75 2020,120 2200,200 2260,340 2230,470 2140,510 1800,520 1450,500 1150,470 950,440 885,360 875,220",
-    labelX: 1520,
-    labelY: 280,
-  },
-};
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import WeatherWidget from "@/components/WeatherWidget";
 
 export default function Home() {
-  const [hovered, setHovered] = useState<number | null>(null);
+  const router = useRouter();
+
+  const handleExplore = () => {
+    router.push("/sectors");
+  };
 
   return (
-    <main className="relative w-full h-screen overflow-hidden">
-      {/* Background */}
-      <div
+    <main className="relative w-full h-screen overflow-hidden bg-[var(--bg)]">
+      <motion.div
+        initial={{ scale: 1.12 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 10, ease: "easeOut" }}
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/images/overview.jpg')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none" />
 
-      {/* Logo */}
-      <header className="absolute top-6 left-8 z-20 pointer-events-none">
-        <img src="/images/logo.png" alt="Niabi's Manor" className="h-20" />
-      </header>
+      <div className="absolute inset-0 bg-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
 
-      {/* Interactive map layer */}
-      <svg
-        viewBox="0 0 2718 1536"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.5) 100%)",
+        }}
+      />
+
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1, duration: 1, ease: "easeOut" }}
+        className="absolute top-10 left-12 flex items-center gap-3 z-20"
       >
-        {sectors.map((sector) => {
-          const hotspot = hotspots[sector.id];
-          if (!hotspot) return null;
-          const isHovered = hovered === sector.id;
+        <span className="text-[10px] tracking-[0.5em] uppercase text-[var(--gold)]">
+          Estate Development
+        </span>
+        <span className="w-10 h-px bg-[var(--gold)]/60" />
+        <span className="text-[10px] tracking-[0.5em] uppercase text-[var(--gold)]">
+          Georgia
+        </span>
+      </motion.div>
 
-          return (
-            <g key={sector.id}>
-              <Link href={`/sector/${sector.id}`}>
-                <polygon
-                  points={hotspot.points}
-                  className="cursor-pointer transition-all duration-300"
-                  style={{
-                    fill: isHovered ? "rgba(184, 145, 47, 0.25)" : "rgba(184, 145, 47, 0)",
-                    stroke: isHovered ? "rgba(212, 178, 86, 1)" : "rgba(212, 178, 86, 0)",
-                    strokeWidth: 4,
-                  }}
-                  onMouseEnter={() => setHovered(sector.id)}
-                  onMouseLeave={() => setHovered(null)}
-                />
-              </Link>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
+        className="absolute top-10 right-12 z-20"
+      >
+        <WeatherWidget />
+      </motion.div>
 
-              {/* Label appears on hover */}
-              {isHovered && (
-                <g className="pointer-events-none">
-                  <rect
-                    x={hotspot.labelX - 130}
-                    y={hotspot.labelY - 32}
-                    width={260}
-                    height={64}
-                    rx={32}
-                    fill="rgba(14, 21, 16, 0.85)"
-                    stroke="rgba(212, 178, 86, 0.6)"
-                    strokeWidth={2}
-                  />
-                  <text
-                    x={hotspot.labelX}
-                    y={hotspot.labelY + 10}
-                    textAnchor="middle"
-                    fill="#d4b256"
-                    fontSize={28}
-                    fontWeight={500}
-                    style={{ fontFamily: "system-ui, sans-serif" }}
-                  >
-                    {sector.nameKa}
-                  </text>
-                </g>
-              )}
-            </g>
-          );
-        })}
-      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-8 z-10">
+        <motion.h1
+          initial={{ opacity: 0, y: 30, letterSpacing: "0.3em" }}
+          animate={{ opacity: 1, y: 0, letterSpacing: "0.02em" }}
+          transition={{ delay: 0.3, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          className="font-serif-display text-[64px] md:text-[112px] lg:text-[136px] leading-none text-[var(--gold-soft)] text-center"
+          style={{
+            textShadow:
+              "0 4px 40px rgba(0,0,0,0.5), 0 0 80px rgba(184,145,47,0.25)",
+          }}
+        >
+          ნიაბის მამული
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, letterSpacing: "1em" }}
+          animate={{ opacity: 1, letterSpacing: "0.5em" }}
+          transition={{ delay: 1.4, duration: 1.4, ease: "easeOut" }}
+          className="mt-8 text-[10px] md:text-xs uppercase text-[var(--fg)]/60 text-center"
+        >
+          Niabi&apos;s Manor · Est. 2026
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 1, ease: "easeOut" }}
+          className="mt-16"
+        >
+          <button
+            onClick={handleExplore}
+            className="group relative inline-flex items-center gap-5 px-10 py-4 border border-[var(--gold)]/50 bg-black/30 backdrop-blur-md hover:bg-[var(--gold)]/10 hover:border-[var(--gold)] transition-all duration-500 overflow-hidden cursor-pointer"
+          >
+            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
+            <span className="relative text-xs tracking-[0.35em] uppercase text-[var(--gold-soft)] group-hover:text-[var(--gold)] transition-colors">
+              სექტორების გამოკვლევა
+            </span>
+            <motion.span
+              animate={{ x: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="relative text-[var(--gold)] text-lg"
+            >
+              →
+            </motion.span>
+          </button>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.4, duration: 1, ease: "easeOut" }}
+        className="absolute bottom-10 left-12 flex items-end gap-10 z-20"
+      >
+        <Stat value="3" label="სექტორი" delay={2.5} />
+        <Stat value="52+" label="ნაკვეთი" delay={2.6} />
+        <Stat value="∞" label="ბუნება" delay={2.7} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 3, duration: 1.2 }}
+        className="absolute bottom-10 right-12 z-20"
+      >
+        <p className="text-[10px] tracking-[0.4em] uppercase text-[var(--gold)]/50">
+          Niabi&apos;s Manor Estate
+        </p>
+      </motion.div>
     </main>
+  );
+}
+
+function Stat({
+  value,
+  label,
+  delay,
+}: {
+  value: string;
+  label: string;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.7, ease: "easeOut" }}
+      className="flex flex-col items-start"
+    >
+      <span className="font-serif-display text-3xl md:text-4xl text-[var(--gold-soft)] leading-none">
+        {value}
+      </span>
+      <span className="mt-2 text-[10px] tracking-[0.35em] uppercase text-[var(--fg)]/50">
+        {label}
+      </span>
+    </motion.div>
   );
 }
