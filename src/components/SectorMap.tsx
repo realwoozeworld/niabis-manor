@@ -1,6 +1,5 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Sector } from "@/data/sectors";
@@ -13,6 +12,7 @@ import {
   type Location,
 } from "@/data/sector1-locations";
 import RegisterForm from "./RegisterForm";
+import { useSearchParams } from "next/navigation";
 
 const VIEWBOX: Record<number, { w: number; h: number }> = {
   1: { w: 2752, h: 1900 },
@@ -30,6 +30,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
   const [selectedLoc, setSelectedLoc] = useState<Location | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [showRegister, setShowRegister] = useState(false);
+  const searchParams = useSearchParams();
 
   const [calibrateMode] = useState<CalibrateMode>(() => {
     if (typeof window === "undefined") return "none";
@@ -51,6 +52,30 @@ export default function SectorMap({ sector }: { sector: Sector }) {
 
   const plots = sector.id === 2 ? sector2Plots : sector.id === 3 ? sector3Plots : [];
   const locations = sector.id === 1 ? sector1Locations : [];
+
+   // Auto-focus on search result — legitimate external system response (URL params)
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    const focusId = searchParams.get("focus");
+    if (!focusId) return;
+
+    const loc = locations.find((l) => l.id === focusId);
+    if (loc) {
+      setSelectedLoc(loc);
+      setSelectedPlot(null);
+      setShowRegister(false);
+      return;
+    }
+
+    const plot = plots.find((p) => p.id === focusId);
+    if (plot) {
+      setSelectedPlot(plot);
+      setSelectedLoc(null);
+      setShowRegister(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, sector.id]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleCalibrateClick = (e: React.MouseEvent<HTMLImageElement>) => {
     if (calibrateMode === "none") return;
@@ -99,9 +124,18 @@ export default function SectorMap({ sector }: { sector: Sector }) {
     <div className="relative w-full h-full">
       <Link
         href="/sectors"
-        className="absolute top-6 right-8 z-30 px-4 py-2 rounded-full border border-[var(--gold)]/50 bg-black/50 backdrop-blur text-sm hover:bg-[var(--gold)] hover:text-black transition"
+        className="group absolute top-6 right-8 z-30 w-11 h-11 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-md border border-[var(--gold)]/30 hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]"
+        aria-label="უკან"
       >
-        ← უკან
+        <svg
+          className="w-5 h-5 text-[var(--gold)] group-hover:text-black transition-colors"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </Link>
 
           {/* Prev sector arrow */}
