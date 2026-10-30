@@ -3,8 +3,6 @@ import { Suspense } from "react";
 import { sectors } from "@/data/sectors";
 import SectorMap from "@/components/SectorMap";
 
-export const instant = false;
-
 export default async function SectorPage({
   params,
 }: {
@@ -17,7 +15,7 @@ export default async function SectorPage({
   return (
     <main className="relative w-full h-screen overflow-hidden bg-[var(--bg)]">
       <Suspense fallback={null}>
-        <SectorMap sector={sector} />
+        <SectorMap key={sector.id} sector={sector} />
       </Suspense>
     </main>
   );

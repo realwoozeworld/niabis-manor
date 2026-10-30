@@ -21,7 +21,7 @@ export default function SearchButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-                className="group fixed top-6 right-24 z-[70] w-11 h-11 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-md border border-[var(--gold)]/30 hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]"
+                className="group hidden md:flex fixed top-6 right-24 z-[70] w-11 h-11 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-md border border-[var(--gold)]/30 hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]"
         aria-label="Search"
       >
         <svg

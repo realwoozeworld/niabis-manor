@@ -4,17 +4,25 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoadingScreen() {
-    const [show, setShow] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !sessionStorage.getItem("niabis-splash-seen-v2");
-  });
+  const [mounted, setMounted] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (!show) return;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setMounted(true);
+    
+    const seen = sessionStorage.getItem("niabis-splash-seen-v2");
+    if (seen) return;
+
+    setShow(true);
     sessionStorage.setItem("niabis-splash-seen-v2", "1");
+    /* eslint-enable react-hooks/set-state-in-effect */
+
     const timer = setTimeout(() => setShow(false), 2800);
     return () => clearTimeout(timer);
-  }, [show]);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>
@@ -25,7 +33,6 @@ export default function LoadingScreen() {
           transition={{ duration: 1, ease: "easeInOut" }}
           className="fixed inset-0 z-[100] bg-[var(--bg)] flex items-center justify-center overflow-hidden"
         >
-          {/* Radial gold glow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -37,7 +44,6 @@ export default function LoadingScreen() {
             }}
           />
 
-          {/* Grain texture */}
           <div
             className="absolute inset-0 opacity-[0.04] pointer-events-none"
             style={{
@@ -47,7 +53,6 @@ export default function LoadingScreen() {
           />
 
           <div className="relative flex flex-col items-center px-8">
-            {/* Logo */}
             <motion.img
               src="/images/logo.png"
               alt="Niabi's Manor"
@@ -57,7 +62,6 @@ export default function LoadingScreen() {
               transition={{ duration: 1.4, ease: "easeOut" }}
             />
 
-            {/* Georgian name */}
             <motion.h1
               className="font-serif-display text-3xl md:text-4xl text-[var(--gold-soft)] mb-3 text-center"
               initial={{ opacity: 0, y: 14 }}
@@ -67,7 +71,6 @@ export default function LoadingScreen() {
               ნიაბის მამული
             </motion.h1>
 
-            {/* English name */}
             <motion.p
               className="text-[10px] md:text-xs tracking-[0.6em] text-[var(--gold)]/70 uppercase mb-10"
               initial={{ opacity: 0, letterSpacing: "1em" }}
@@ -77,7 +80,6 @@ export default function LoadingScreen() {
               Niabi&apos;s Manor
             </motion.p>
 
-            {/* Divider line */}
             <motion.div
               className="h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent"
               initial={{ width: 0, opacity: 0 }}
@@ -85,7 +87,6 @@ export default function LoadingScreen() {
               transition={{ delay: 1.5, duration: 1, ease: "easeOut" }}
             />
 
-            {/* Loading dots */}
             <motion.div
               className="flex gap-2 mt-10"
               initial={{ opacity: 0 }}

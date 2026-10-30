@@ -20,9 +20,13 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
     setStatus("sending");
 
     try {
-      // TODO: ჩაანაცვლე რეალური endpoint-ით (Resend / EmailJS / API route)
-      await new Promise((r) => setTimeout(r, 1200));
-      console.log("Form submitted:", { plotId, name, phone, email, comment });
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plotId, name, phone, email, comment }),
+      });
+
+      if (!res.ok) throw new Error("Failed");
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -74,8 +78,8 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
-        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-[var(--gold)]/20
-                   text-sm text-[var(--fg)] placeholder:text-[var(--fg)]/30
+        className="w-full px-3 py-3 rounded-lg bg-black/40 border border-[var(--gold)]/20
+                   text-base text-[var(--fg)] placeholder:text-[var(--fg)]/30
                    focus:border-[var(--gold)]/60 focus:outline-none transition"
       />
 
@@ -85,8 +89,8 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
         required
-        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-[var(--gold)]/20
-                   text-sm text-[var(--fg)] placeholder:text-[var(--fg)]/30
+        className="w-full px-3 py-3 rounded-lg bg-black/40 border border-[var(--gold)]/20
+                   text-base text-[var(--fg)] placeholder:text-[var(--fg)]/30
                    focus:border-[var(--gold)]/60 focus:outline-none transition"
       />
 
@@ -95,8 +99,8 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
         placeholder="ელფოსტა"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-[var(--gold)]/20
-                   text-sm text-[var(--fg)] placeholder:text-[var(--fg)]/30
+        className="w-full px-3 py-3 rounded-lg bg-black/40 border border-[var(--gold)]/20
+                   text-base text-[var(--fg)] placeholder:text-[var(--fg)]/30
                    focus:border-[var(--gold)]/60 focus:outline-none transition"
       />
 
@@ -105,16 +109,16 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={2}
-        className="w-full px-3 py-2 rounded-lg bg-black/40 border border-[var(--gold)]/20
-                   text-sm text-[var(--fg)] placeholder:text-[var(--fg)]/30
+        className="w-full px-3 py-3 rounded-lg bg-black/40 border border-[var(--gold)]/20
+                   text-base text-[var(--fg)] placeholder:text-[var(--fg)]/30
                    focus:border-[var(--gold)]/60 focus:outline-none transition resize-none"
       />
 
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full py-2.5 rounded-lg bg-[var(--gold)] text-black font-medium
-                   text-sm hover:bg-[var(--gold-soft)] transition disabled:opacity-50"
+        className="w-full py-3 rounded-lg bg-[var(--gold)] text-black font-medium
+                   text-base hover:bg-[var(--gold-soft)] transition disabled:opacity-50"
       >
         {status === "sending" ? "იგზავნება..." : "გაგზავნა"}
       </button>

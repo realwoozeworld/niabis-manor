@@ -27,7 +27,6 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
 
   const results = useMemo(() => searchContent(query), [query]);
 
-  // Focus input on mount — no setState, only DOM side-effect
   useEffect(() => {
     const t = setTimeout(() => inputRef.current?.focus(), 100);
     return () => clearTimeout(t);
@@ -35,7 +34,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
 
   const handleSelect = (result: SearchResult) => {
     onClose();
-    router.push(`/sector/${result.sectorId}?focus=${result.id})`);
+    router.push(`/sector/${result.sectorId}?focus=${result.id}`);
   };
 
   useEffect(() => {
@@ -67,18 +66,18 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-start justify-center pt-[15vh] px-4"
+      className="fixed inset-0 z-[150] bg-[var(--panel)] md:bg-black/70 md:backdrop-blur-md flex flex-col md:items-start md:justify-start md:pt-[15vh] md:px-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, y: -20, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.98 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.2 }}
-        className="w-full max-w-[600px] rounded-2xl border border-[var(--gold)]/30 bg-[var(--panel)]/95 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] overflow-hidden"
+        className="w-full h-full md:h-auto md:max-w-[600px] md:mx-auto md:rounded-2xl md:border border-[var(--gold)]/30 bg-[var(--panel)]/95 md:backdrop-blur-xl md:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--gold)]/20">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--gold)]/20 mt-12 md:mt-0">
           <span className="text-[var(--gold)] text-lg">🔍</span>
           <input
             ref={inputRef}
@@ -88,15 +87,18 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            placeholder="მოძებნე: სპა, ვენახები, N-15, გიორგი..."
+            placeholder="მოძებნე: სპა, ვენახები, N-15..."
             className="flex-1 bg-transparent border-none outline-none text-base text-[var(--fg)] placeholder:text-[var(--fg)]/40"
           />
-          <kbd className="text-[10px] px-2 py-1 rounded bg-[var(--fg)]/10 text-[var(--fg)]/50 border border-[var(--fg)]/10">
+          <button onClick={onClose} className="md:hidden text-[var(--fg)]/60 text-sm font-medium px-2 py-1">
+            გაუქმება
+          </button>
+          <kbd className="hidden md:block text-[10px] px-2 py-1 rounded bg-[var(--fg)]/10 text-[var(--fg)]/50 border border-[var(--fg)]/10">
             ESC
           </kbd>
         </div>
 
-        <div className="max-h-[50vh] overflow-y-auto no-scrollbar">
+        <div className="max-h-full md:max-h-[50vh] overflow-y-auto no-scrollbar flex-1 md:flex-none">
           {query.trim() === "" ? (
             <div className="px-5 py-8 text-center text-sm text-[var(--fg)]/50">
               დაიწყე ტექსტის აკრეფა...
@@ -112,7 +114,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                   key={`${result.sectorId}-${result.type}-${result.id}-${i}`}
                   onClick={() => handleSelect(result)}
                   onMouseEnter={() => setSelectedIndex(i)}
-                  className={`w-full px-5 py-3 flex items-center gap-4 text-left transition-colors ${
+                  className={`w-full px-5 py-4 flex items-center gap-4 text-left transition-colors ${
                     i === selectedIndex
                       ? "bg-[var(--gold)]/15"
                       : "hover:bg-[var(--gold)]/5"
@@ -123,17 +125,17 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                   </span>
 
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-[var(--fg)] font-medium truncate">
+                    <div className="text-sm md:text-base text-[var(--fg)] font-medium truncate">
                       {result.titleKa}
                     </div>
                     {result.subtitle && (
-                      <div className="text-xs text-[var(--fg)]/50 truncate">
+                      <div className="text-xs md:text-sm text-[var(--fg)]/50 truncate">
                         {result.subtitle}
                       </div>
                     )}
                   </div>
 
-                  <span className="shrink-0 text-[10px] uppercase tracking-wider text-[var(--fg)]/40">
+                  <span className="shrink-0 text-[10px] uppercase tracking-wider text-[var(--fg)]/40 hidden md:block">
                     {result.type === "location" && "ლოკაცია"}
                     {result.type === "plot" && "ნაკვეთი"}
                     {result.type === "sector" && "სექტორი"}
@@ -144,7 +146,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="px-5 py-3 border-t border-[var(--gold)]/20 flex items-center gap-4 text-[10px] text-[var(--fg)]/40">
+        <div className="hidden md:flex px-5 py-3 border-t border-[var(--gold)]/20 items-center gap-4 text-[10px] text-[var(--fg)]/40">
           <span>↑↓ ნავიგაცია</span>
           <span>Enter არჩევა</span>
           <span>ESC დახურვა</span>

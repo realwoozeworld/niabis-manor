@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LoadingScreen from "@/components/LoadingScreen";
-import WeatherWidget from "@/components/WeatherWidget";
 import SearchButton from "@/components/SearchButton";
+import SocialButtons from "@/components/SocialButtons";
 
 export const metadata: Metadata = {
   title: "ნიაბის მამული · Niabi's Manor",
-  description: "Estate development in Georgia — vineyards, orchards, and countryside living",
+  description: "Estate development in Georgia",
 };
 
 export default function RootLayout({
@@ -19,12 +19,11 @@ export default function RootLayout({
       <body className="min-h-screen antialiased">
         <LoadingScreen />
         <SearchButton />
-        {/* Weather — fixed top-center, on every page */}
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[80] pointer-events-auto">
-          <WeatherWidget />
-        </div>
-
+        
         {children}
+
+        {/* 📱 ეს ღილაკები ყველა გვერდზე გამოჩნდება მობილურზე */}
+        <SocialButtons />
       </body>
     </html>
   );
