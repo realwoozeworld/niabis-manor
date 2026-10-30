@@ -411,7 +411,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                 <button onClick={closeCard} className="text-[var(--fg)]/50 hover:text-[var(--gold)] text-2xl leading-none -mt-1">×</button>
               </div>
               {selectedLoc?.image && (
-                <div className="relative w-full h-44 shrink-0 bg-[#0e1510] border-b border-[var(--gold)]/20">
+                <div className="relative w-full h-85 shrink-0 bg-[#0e1510] border-b border-[var(--gold)]/20">
                   <img src={selectedLoc.image} alt={selectedLoc.nameKa} className="absolute inset-0 w-full h-full object-cover" />
                 </div>
               )}
