@@ -24,11 +24,6 @@ const hotspots: Record<
     labelX: 1360,
     labelY: 780,
   },
-  4: {
-    points: "1530,540 1780,560 2050,620 2320,720 2520,850 2640,1000 2650,1130 2520,1200 2200,1230 1900,1220 1650,1180 1550,1080 1530,900 1520,700",
-    labelX: 2080,
-    labelY: 880,
-  },
 };
 
 const sectorDescriptions: Record<number, string> = {
@@ -45,9 +40,9 @@ export default function SectorsPage() {
     <main className="relative w-full h-screen overflow-hidden bg-[var(--bg)]">
       
       {/* ========================================== */}
-      {/* 📱 MOBILE VIEW (App Style with Ambient Glow) */}
+      {/* 📱 MOBILE VIEW (Carousel + Info + Buttons) */}
       {/* ========================================== */}
-      <div className="md:hidden relative w-full h-full overflow-y-auto pb-12 bg-[#0e1510]">
+      <div className="md:hidden relative w-full h-full overflow-y-auto pb-28 bg-[#0e1510]">
         
         {/* 🪄 Ambient Glow Background Effect */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
@@ -55,77 +50,77 @@ export default function SectorsPage() {
           <div className="absolute bottom-[20%] right-[-20%] w-[70vw] h-[70vw] rounded-full bg-[#2e5c3e]/20 blur-[100px]" />
         </div>
 
-        {/* კონტენტი (z-10) */}
-        <div className="relative z-10 px-5 flex flex-col gap-6 pt-12">
-          
-          {/* Header & Greeting */}
-          <div>
-            <p className="text-[10px] text-[var(--gold)]/70 uppercase tracking-[0.2em] mb-1">
+        {/* Header */}
+        <div className="relative z-10 px-6 pt-14 pb-4">
+          <p className="text-[10px] text-[var(--gold)]/70 uppercase tracking-[0.2em] mb-1">
+            ნიაბის მამული
+          </p>
+          <h1 className="font-serif-display text-3xl text-[var(--fg)] leading-tight mb-2">
+            კეთილი იყოს თქვენი მობრძანება
+          </h1>
+          <p className="text-sm text-[var(--fg)]/60">
+            აირჩიე სასურველი სექტორი.
+          </p>
+        </div>
+
+        {/* 🎠 Horizontal Carousel (Scroll Snap) - შევამცირე სიმაღლე */}
+        <div className="relative z-10 w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 px-6 pb-6 h-[45vh] items-center">
+          {sectors.map((sector) => (
+            <Link
+              key={sector.id}
+              href={`/sector/${sector.id}`}
+              className="relative flex-shrink-0 snap-center w-[85vw] h-full rounded-[2rem] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.9)] border border-[#2d3b31] group"
+            >
+              {/* ფოტო */}
+              <img
+                src={sector.id === 4 ? '/images/overview.jpg' : sector.image}
+                alt={sector.nameKa}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-active:scale-105"
+              />
+              
+              {/* მუქი გრადიენტი ტექსტისთვის */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0c] via-[#0a0f0c]/40 to-transparent opacity-90" />
+
+              {/* ტექსტი (ქვემოთ) */}
+              <div className="absolute bottom-0 left-0 w-full p-6 flex flex-col justify-end">
+                <h2 className="font-serif-display text-3xl text-[var(--gold-soft)] mb-1">
+                  {sector.nameKa}
+                </h2>
+                <p className="text-[11px] text-[var(--gold)]/80 uppercase tracking-widest mb-3">
+                  {sector.subtitleKa}
+                </p>
+                <p className="text-sm text-[var(--fg)]/70 line-clamp-2 leading-relaxed mb-4">
+                  {sectorDescriptions[sector.id]}
+                </p>
+                <div className="flex items-center gap-2 text-[var(--gold)] text-sm font-medium">
+                  <span>გამოკვლევა</span>
+                  <span className="w-6 h-6 rounded-full bg-[var(--gold)]/20 flex items-center justify-center">→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        
+        {/* Carousel Hint (წერტილები ქვემოთ) */}
+        <div className="relative z-10 flex justify-center gap-2 mb-6">
+           {sectors.map((s) => (
+             <div key={s.id} className="w-1.5 h-1.5 rounded-full bg-[var(--fg)]/20" />
+           ))}
+        </div>
+
+        {/* 📝 ინფორმაციული ტექსტი კარუსელის ქვემოთ */}
+        <div className="relative z-10 px-6 pb-6">
+          <div className="bg-[#131a14]/80 backdrop-blur-md border border-[#2d3b31] rounded-2xl p-5 shadow-lg">
+            <h3 className="font-serif-display text-xl text-[var(--gold-soft)] mb-2">
               ნიაბის მამული
+            </h3>
+            <p className="text-sm text-[var(--fg)]/70 leading-relaxed">
+              უნიკალური საცხოვრებელი და აგრო-ტურისტული კომპლექსი, რომელიც აერთიანებს თანამედროვე არქიტექტურას, ტრადიციულ ვენახებსა და ბუნებასთან ჰარმონიას. 
+              აირჩიეთ სექტორი, რომ გაეცნოთ დეტალებს, იხილოთ ინტერაქტიული რუკა და დაუკავშირდეთ ჩვენს გუნდს.
             </p>
-            <h1 className="font-serif-display text-4xl text-[var(--fg)] leading-tight">
-              გამარჯობა! 👋
-            </h1>
-            <p className="text-sm text-[var(--fg)]/60 mt-2">
-              აირჩიე სასურველი სექტორი და გამოიკვლიე ტერიტორია.
-            </p>
-          </div>
-
-          {/* Search Bar (Visual only) */}
-          <div className="relative mt-2">
-            <input 
-              type="text" 
-              placeholder="მოძებნე სექტორი..." 
-              className="w-full bg-[#131a14] border border-[#2d3b31] rounded-2xl py-3.5 pl-12 pr-4 text-sm text-[var(--fg)] placeholder:text-[var(--fg)]/40 focus:outline-none focus:border-[var(--gold)]/50 shadow-lg"
-            />
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--fg)]/40">🔍</span>
-          </div>
-
-          {/* Cards List */}
-          <div className="flex flex-col gap-6 mt-2">
-            <div className="flex justify-between items-center">
-              <h2 className="text-sm text-[var(--gold)] font-medium uppercase tracking-widest">სექტორები</h2>
-            </div>
-
-            {sectors.map((sector) => (
-              <Link
-                key={sector.id}
-                href={`/sector/${sector.id}`}
-                className="group relative flex flex-col w-full rounded-3xl overflow-hidden border border-[#2d3b31] bg-[#131a14] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.8)] active:scale-[0.98] transition-transform"
-              >
-                {/* 🖼️ ფოტო */}
-                <div className="relative w-full h-56">
-                  <img
-                    src={sector.id === 4 ? '/images/overview.jpg' : sector.image}
-                    alt={sector.nameKa}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#131a14] via-[#131a14]/30 to-transparent opacity-90" />
-                </div>
-
-                {/* 📝 ტექსტი */}
-                <div className="p-5 relative z-10">
-                  <div className="flex justify-between items-center mb-1">
-                    <h3 className="font-serif-display text-2xl text-[var(--gold-soft)]">
-                      {sector.nameKa}
-                    </h3>
-                    <span className="w-8 h-8 rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/50 flex items-center justify-center text-[var(--gold)] text-lg shrink-0">
-                      →
-                    </span>
-                  </div>
-                  
-                  <p className="text-[10px] text-[var(--gold)]/70 uppercase tracking-widest mb-3">
-                    {sector.subtitleKa}
-                  </p>
-                  
-                  <p className="text-sm text-[var(--fg)]/80 leading-relaxed">
-                    {sectorDescriptions[sector.id]}
-                  </p>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
+
       </div>
 
       {/* ========================================== */}

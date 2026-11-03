@@ -8,6 +8,7 @@ export interface Sector {
   subtitleEn: string;
   status: SectorStatus;
   image: string;
+  mobileImage?: string;
 }
 
 export const sectors: Sector[] = [
@@ -19,6 +20,7 @@ export const sectors: Sector[] = [
     subtitleEn: "Hospitality sector",
     status: "showcase",
     image: "/images/sector-1.jpg",
+    mobileImage: "/images/sector-1-mobile.jpg",
   },
   {
     id: 2,
