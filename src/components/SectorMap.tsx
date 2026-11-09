@@ -1,5 +1,7 @@
 "use client";
 
+import WeatherWidget from "./WeatherWidget";
+import ProgressWidget from "./ProgressWidget";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -181,7 +183,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
       {/* 📱 MOBILE VIEW */}
       <div className="md:hidden flex flex-col w-full h-full bg-[#0e1510]">
         
-        {/* Header */}
+         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-10 pb-2 shrink-0 z-20">
           <Link href="/sectors" className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e]/80 backdrop-blur-md flex items-center justify-center text-[var(--gold)] border border-[#2d3b31] shadow-lg">
              ←
@@ -190,7 +192,14 @@ export default function SectorMap({ sector }: { sector: Sector }) {
             <span className="text-[#f4f4f4] font-serif-display text-lg tracking-wide drop-shadow-md">ნიაბის მამული</span>
             <span className="text-[var(--gold)] font-serif-display text-lg tracking-wide drop-shadow-md">{sector.nameKa}</span>
           </div>
-          <div className="w-10 h-10 shrink-0"></div>
+          
+          {/* 🔴 აქ ჩავსვით Weather და WhatsApp სფეისერის ნაცვლად */}
+          <div className="flex items-center gap-2">
+            <WeatherWidget />
+            <a href="https://wa.me/995598211275" target="_blank" rel="noreferrer" className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e] border border-[#2d3b31] flex items-center justify-center">
+              <span className="text-[var(--gold)] text-lg">💬</span>
+            </a>
+          </div>
         </div>
 
         {/* MAP AREA */}
@@ -320,6 +329,10 @@ export default function SectorMap({ sector }: { sector: Sector }) {
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-0" />
+        
+        <div className="absolute top-6 right-24 z-40">
+          <WeatherWidget />
+        </div>
 
         <svg
           viewBox={`0 0 ${VB_W} ${VB_H}`}
@@ -449,8 +462,9 @@ export default function SectorMap({ sector }: { sector: Sector }) {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
-      </div>
+          </AnimatePresence>
+        </div>
+      <ProgressWidget />
     </div>
   );
 }
