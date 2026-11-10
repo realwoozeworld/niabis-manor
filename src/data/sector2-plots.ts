@@ -31,10 +31,10 @@ const rawSector2Plots: Plot[] = [
   { id: "N-10", ownerKa: "დათო ბარსეგიანი",  ownerEn: "Dato Barsegian", areaSqm: 2115,   status: "sold", x: 1240, y: 401, planted: " ", isWatered: true  },
   { id: "N-11", ownerKa: "გიორგი ანთაძე",    ownerEn: "Giorgi Antadze", areaSqm: 1101,   status: "sold",  x: 1510, y: 490, planted: " ", isWatered: true  },
   { id: "N-12", ownerKa: "პაატა მაღლაკელიძე", ownerEn: "Paata Maghlakelidze", areaSqm: 1101,   status: "sold", x: 1617, y: 259, planted: " ", isWatered: true  },
-  { id: "N-13", ownerKa: "ლევანი ცინცაძე",   ownerEn: "Levan Tsintsadze", areaSqm: 1014.6, status: "sold", x: 1937, y: 313, planted: "", isWatered: true  },
-  { id: "N-14", ownerKa: "თორნიკე თაბორიძე", ownerEn: "Tornike Taboridze", areaSqm: 1011.7, status: "sold", x: 2171, y: 346, planted: "", isWatered: true  },
-  { id: "N-15", ownerKa: "ლაშა ანძაველიძე",   ownerEn: "Lasha Andzavelidze", areaSqm: 1005.7, status: "sold", x: 2366, y: 356, planted: "", isWatered: true  },
-  { id: "N-16", ownerKa: "ლაშა ანძაველიძე",   ownerEn: "Lasha Andzavelidze", areaSqm: 1005.2, status: "sold", x: 2585, y: 373, planted: "", isWatered: true  },
+  { id: "N-13", ownerKa: "ლევანი ცინცაძე",   ownerEn: "Levan Tsintsadze", areaSqm: 1014.6, status: "sold", x: 1937, y: 313, planted: " ", isWatered: true  },
+  { id: "N-14", ownerKa: "თორნიკე თაბორიძე", ownerEn: "Tornike Taboridze", areaSqm: 1011.7, status: "sold", x: 2171, y: 346, planted: " ", isWatered: true  },
+  { id: "N-15", ownerKa: "ლაშა ანძაველიძე",   ownerEn: "Lasha Andzavelidze", areaSqm: 1005.7, status: "sold", x: 2366, y: 356, planted: " ", isWatered: true  },
+  { id: "N-16", ownerKa: "ლაშა ანძაველიძე",   ownerEn: "Lasha Andzavelidze", areaSqm: 1005.2, status: "sold", x: 2585, y: 373, planted: "ატმის ხეები", isWatered: false  },
 ];
 
 export const sector2Plots: Plot[] = rawSector2Plots.map((plot, i) => ({
