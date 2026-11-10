@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import WeatherWidget from "@/components/WeatherWidget";
 
 export default function Home() {
   const router = useRouter();
@@ -33,6 +34,16 @@ export default function Home() {
             "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 100%)",
         }}
       />
+
+      {/* Top Center — Weather Widget */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
+        className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 z-30"
+      >
+        <WeatherWidget />
+      </motion.div>
 
       {/* Top-left — location label (Hidden on mobile) */}
       <motion.div

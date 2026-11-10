@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ProgressWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const progress = 85; // 🔴 აქ შეგიძლია შეცვალო პროცენტი
+  const progress = 50; // 🔴 აქ შეგიძლია შეცვალო პროცენტი
 
   return (
     <motion.div
@@ -32,7 +32,7 @@ export default function ProgressWidget() {
               className="flex flex-col whitespace-nowrap"
             >
               <span className="text-white text-sm font-medium">საიტი მზადდება...</span>
-              <span className="text-[var(--gold-soft)] text-[11px]">მალე დავასრულებთ, გელოდებით! 🤍</span>
+              <span className="text-[var(--gold-soft)] text-[11px]">მალე დავასრულებთ</span>
             </motion.div>
           )}
         </AnimatePresence>

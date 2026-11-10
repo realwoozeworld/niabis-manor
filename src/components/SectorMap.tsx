@@ -16,6 +16,13 @@ import {
   type Location,
 } from "@/data/sector1-locations";
 import RegisterForm from "./RegisterForm";
+import LocationExperience from "./LocationExperience";
+
+function formatArea(sqm: number): string {
+  const parts = sqm.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(".");
+}
 
 export default function SectorMap({ sector }: { sector: Sector }) {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
@@ -106,27 +113,43 @@ export default function SectorMap({ sector }: { sector: Sector }) {
     let cx = VB_W / 2;
     let cy = VB_H / 2;
 
+    const getPlotCenter = (p: Plot) => {
+      if (p.x != null && p.y != null) return { cx: p.x, cy: p.y };
+      if (p.polygon && p.polygon.length > 0) {
+        return {
+          cx: p.polygon.reduce((s, pt) => s + pt.x, 0) / p.polygon.length,
+          cy: p.polygon.reduce((s, pt) => s + pt.y, 0) / p.polygon.length,
+        };
+      }
+      return { cx: VB_W / 2, cy: VB_H / 2 };
+    };
+
     const getActivePoints = (loc: Location) => {
       return isMobileSector1 && loc.mobilePoints ? loc.mobilePoints : loc.points;
     };
 
     if (selectedLoc) {
       const activePts = getActivePoints(selectedLoc);
-      const sumX = activePts.reduce((s, p) => s + p.x, 0);
-      const sumY = activePts.reduce((s, p) => s + p.y, 0);
-      cx = sumX / activePts.length;
-      cy = sumY / activePts.length;
-    } else if (selectedPlot && selectedPlot.x && selectedPlot.y) {
-      cx = selectedPlot.x;
-      cy = selectedPlot.y;
-    } else if (currentItem && 'points' in currentItem) {
-       const activePts = getActivePoints(currentItem as Location);
-       if (activePts.length > 0) {
-         const sumX = activePts.reduce((s, p) => s + p.x, 0);
-         const sumY = activePts.reduce((s, p) => s + p.y, 0);
-         cx = sumX / activePts.length;
-         cy = sumY / activePts.length;
-       }
+      if (activePts.length > 0) {
+        cx = activePts.reduce((s, p) => s + p.x, 0) / activePts.length;
+        cy = activePts.reduce((s, p) => s + p.y, 0) / activePts.length;
+      }
+    } else if (selectedPlot) {
+      const center = getPlotCenter(selectedPlot);
+      cx = center.cx;
+      cy = center.cy;
+    } else if (currentItem) {
+      if ('points' in currentItem) {
+        const activePts = getActivePoints(currentItem as Location);
+        if (activePts.length > 0) {
+          cx = activePts.reduce((s, p) => s + p.x, 0) / activePts.length;
+          cy = activePts.reduce((s, p) => s + p.y, 0) / activePts.length;
+        }
+      } else {
+        const center = getPlotCenter(currentItem as Plot);
+        cx = center.cx;
+        cy = center.cy;
+      }
     }
 
     const zoomScale = 1.5; 
@@ -184,22 +207,33 @@ export default function SectorMap({ sector }: { sector: Sector }) {
       <div className="md:hidden flex flex-col w-full h-full bg-[#0e1510]">
         
          {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-10 pb-2 shrink-0 z-20">
+        <div className="flex items-center justify-between px-5 pt-10 pb-2 shrink-0 z-20">
           <Link href="/sectors" className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e]/80 backdrop-blur-md flex items-center justify-center text-[var(--gold)] border border-[#2d3b31] shadow-lg">
              ←
           </Link>
           <div className="flex items-center gap-1.5 whitespace-nowrap">
-            <span className="text-[#f4f4f4] font-serif-display text-lg tracking-wide drop-shadow-md">ნიაბის მამული</span>
-            <span className="text-[var(--gold)] font-serif-display text-lg tracking-wide drop-shadow-md">{sector.nameKa}</span>
+            <span className="text-[#f4f4f4] font-serif-display text-base sm:text-lg tracking-wide drop-shadow-md">ნიაბის მამული</span>
+            <span className="text-[var(--gold)] font-serif-display text-base sm:text-lg tracking-wide drop-shadow-md">{sector.nameKa}</span>
           </div>
           
-          {/* 🔴 აქ ჩავსვით Weather და WhatsApp სფეისერის ნაცვლად */}
           <div className="flex items-center gap-2">
-            <WeatherWidget />
-            <a href="https://wa.me/995598211275" target="_blank" rel="noreferrer" className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e] border border-[#2d3b31] flex items-center justify-center">
-              <span className="text-[var(--gold)] text-lg">💬</span>
-            </a>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
+              className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e] border border-[#2d3b31] flex items-center justify-center text-[var(--gold)] shadow-lg active:scale-95 transition-all"
+              aria-label="Search"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
+        </div>
+
+        {/* 🌤 Centered Weather Widget */}
+        <div className="flex justify-center px-4 pt-1 pb-1 z-20 shrink-0">
+          <WeatherWidget />
         </div>
 
         {/* MAP AREA */}
@@ -232,25 +266,147 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                   </g>
                 )}
 
-                {locations.map((loc) => {
-                  const dotColor = categoryColors[loc.category];
-                  const isActive = activeIndex === items.findIndex(i => i.id === loc.id);
-                  
-                  const activePoints = isMobileSector1 && loc.mobilePoints ? loc.mobilePoints : loc.points;
+                {/* 📍 Sector 1 Locations */}
+                {locations.length > 0 && (
+                  <g className="pointer-events-auto">
+                    {locations.map((loc) => {
+                      const dotColor = categoryColors[loc.category];
+                      const isActive = activeIndex === items.findIndex((i) => i.id === loc.id);
+                      const activePoints = isMobileSector1 && loc.mobilePoints ? loc.mobilePoints : loc.points;
 
-                  return (
-                    <g key={loc.id} onClick={() => {
+                      return (
+                        <g
+                          key={loc.id}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            if (calibrateMode) return;
+                            const idx = items.findIndex((i) => i.id === loc.id);
+                            if (idx !== -1) {
+                              setActiveIndex(idx);
+                              scrollToCard(idx);
+                            }
+                            setSelectedLoc(loc);
+                            setSelectedPlot(null);
+                          }}
+                        >
+                          {activePoints.map((pt, i) => (
+                            <circle
+                              key={i}
+                              cx={pt.x}
+                              cy={pt.y}
+                              r={isActive ? 22 : 12}
+                              fill={dotColor}
+                              stroke="rgba(255,255,255,0.9)"
+                              strokeWidth={2.5}
+                              className="transition-all duration-300"
+                            />
+                          ))}
+                        </g>
+                      );
+                    })}
+                  </g>
+                )}
+
+                {/* 🏡 Sector 2 & 3 Plots */}
+                {plots.length > 0 && (
+                  <g className="pointer-events-auto">
+                    {plots.map((plot) => {
+                      const isActive = activeIndex === items.findIndex((i) => i.id === plot.id);
+                      const isSelected = selectedPlot?.id === plot.id;
+                      const isHighlighted = isActive || isSelected;
+
+                      const cx = plot.x || (plot.polygon ? plot.polygon.reduce((s, p) => s + p.x, 0) / plot.polygon.length : undefined);
+                      const cy = plot.y || (plot.polygon ? plot.polygon.reduce((s, p) => s + p.y, 0) / plot.polygon.length : undefined);
+
+                      const handlePlotClick = () => {
                         if (calibrateMode) return;
-                        const idx = items.findIndex(i => i.id === loc.id);
-                        setActiveIndex(idx);
-                        scrollToCard(idx);
-                    }}>
-                      {activePoints.map((pt, i) => (
-                        <circle key={i} cx={pt.x} cy={pt.y} r={isActive ? 22 : 12} fill={dotColor} stroke="rgba(255,255,255,0.9)" strokeWidth={2.5} className="transition-all duration-300 cursor-pointer" />
-                      ))}
-                    </g>
-                  );
-                })}
+                        const idx = items.findIndex((i) => i.id === plot.id);
+                        if (idx !== -1) {
+                          setActiveIndex(idx);
+                          scrollToCard(idx);
+                        }
+                        setSelectedPlot(plot);
+                        setSelectedLoc(null);
+                      };
+
+                      if (plot.polygon && plot.polygon.length > 0) {
+                        const polyFill = isHighlighted
+                          ? "rgba(212, 178, 86, 0.7)"
+                          : plot.status === "sold"
+                          ? "rgba(200, 60, 60, 0.45)"
+                          : plot.status === "reserved"
+                          ? "rgba(90, 155, 213, 0.5)"
+                          : "rgba(184, 145, 47, 0.35)";
+
+                        const polyStroke = isHighlighted
+                          ? "rgba(255, 255, 255, 1)"
+                          : plot.status === "sold"
+                          ? "rgba(230, 80, 80, 0.95)"
+                          : plot.status === "reserved"
+                          ? "rgba(90, 155, 213, 0.95)"
+                          : "rgba(184, 145, 47, 0.9)";
+
+                        return (
+                          <g key={plot.id} className="cursor-pointer" onClick={handlePlotClick}>
+                            <polygon
+                              points={plot.polygon.map((p) => `${p.x},${p.y}`).join(" ")}
+                              fill={polyFill}
+                              stroke={polyStroke}
+                              strokeWidth={isHighlighted ? 4 : 2}
+                              className="transition-all duration-300"
+                            />
+                            {cx != null && cy != null && (
+                              <text
+                                x={cx}
+                                y={cy + 9}
+                                textAnchor="middle"
+                                fill="#ffffff"
+                                fontSize={24}
+                                fontWeight={700}
+                                className="pointer-events-none select-none"
+                                style={{
+                                  paintOrder: "stroke",
+                                  stroke: "rgba(0, 0, 0, 0.8)",
+                                  strokeWidth: 4,
+                                  strokeLinejoin: "round",
+                                }}
+                              >
+                                {plot.id.replace("N-", "")}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      }
+
+                      if (cx == null || cy == null) return null;
+
+                      return (
+                        <g key={plot.id} className="cursor-pointer" onClick={handlePlotClick}>
+                          <circle
+                            cx={cx}
+                            cy={cy}
+                            r={isHighlighted ? 32 : 24}
+                            fill={isHighlighted ? "rgba(212, 178, 86, 1)" : plot.status === "sold" ? "rgba(200, 60, 60, 0.85)" : plot.status === "reserved" ? "rgba(90, 155, 213, 0.85)" : "rgba(184, 145, 47, 0.85)"}
+                            stroke="rgba(255,255,255,0.95)"
+                            strokeWidth={isHighlighted ? 3.5 : 2}
+                            className="transition-all duration-300"
+                          />
+                          <text
+                            x={cx}
+                            y={cy + 8}
+                            textAnchor="middle"
+                            fill={isHighlighted ? "#0e1510" : "#ffffff"}
+                            fontSize={20}
+                            fontWeight={700}
+                            className="pointer-events-none select-none"
+                          >
+                            {plot.id.replace("N-", "")}
+                          </text>
+                        </g>
+                      );
+                    })}
+                  </g>
+                )}
               </svg>
             </motion.div>
           </div>
@@ -267,37 +423,127 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                         {items.map((item, index) => {
               const isLoc = 'nameKa' in item;
               const title = isLoc ? item.nameKa : item.id;
-              const subtitle = isLoc ? categoryLabels[item.category] : "ნაკვეთი";
-              const image = isLoc ? item.image : "/images/overview.jpg";
+              const subtitle = isLoc
+                ? categoryLabels[item.category]
+                : item.status === "sold"
+                ? "გაყიდულია"
+                : item.status === "reserved"
+                ? "დაჯავშნილია"
+                : "თავისუფალი";
+              const image = isLoc ? item.image : (item.image || sector.image);
+              const isCardActive = index === activeIndex;
+
+              const statusColor = !isLoc
+                ? item.status === "sold"
+                  ? "text-red-400"
+                  : item.status === "reserved"
+                  ? "text-sky-400"
+                  : "text-[var(--gold)]"
+                : "text-[var(--gold)]";
 
               return (
                 <div 
                   key={item.id}
-                  className="w-[88vw] max-w-[360px] shrink-0 snap-center"
+                  onClick={() => {
+                    setActiveIndex(index);
+                    scrollToCard(index);
+                    if (isLoc) {
+                      setSelectedLoc(item as Location);
+                      setSelectedPlot(null);
+                    } else {
+                      setSelectedPlot(item as Plot);
+                      setSelectedLoc(null);
+                    }
+                  }}
+                  className="w-[88vw] max-w-[360px] shrink-0 snap-center cursor-pointer"
                 >
-                  <div className="w-full h-[150px] rounded-[2rem] bg-[#131a14]/95 backdrop-blur-xl border border-[#2d3b31] p-5 shadow-2xl flex gap-4 relative items-center">
+                  <div className={`w-full min-h-[155px] h-auto rounded-[2rem] bg-[#131a14]/95 backdrop-blur-xl border p-4.5 shadow-2xl flex gap-3.5 relative items-center transition-all duration-300 ${
+                    isCardActive ? "border-[var(--gold)] shadow-[0_0_25px_rgba(212,178,86,0.25)]" : "border-[#2d3b31]"
+                  }`}>
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-[#2d3b31]" />
                     
                     {/* ფოტო */}
-                    <div className="w-[100px] h-[100px] shrink-0 rounded-2xl overflow-hidden border border-[var(--gold)]/30 shadow-inner">
+                    <div className="w-[96px] h-[96px] shrink-0 rounded-2xl overflow-hidden border border-[var(--gold)]/30 shadow-inner">
                       <img src={image} alt={title} className="w-full h-full object-cover" />
                     </div>
 
                     {/* ტექსტი */}
-                    <div className="flex flex-col justify-center flex-1 py-1">
-                      {/* 🔴 სათაური: შევამცირე ზომა და დავუმატე line-clamp-2 */}
-                      <h2 className="font-serif-display text-[20px] text-[var(--gold-soft)] leading-tight line-clamp-2">
-                        {title}
-                      </h2>
+                    <div className="flex flex-col justify-center flex-1 py-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h2 className="font-serif-display text-[19px] text-[var(--gold-soft)] leading-tight truncate">
+                          {title}
+                        </h2>
+                        {!isLoc && item.areaSqm && (
+                          <span className="text-[11px] text-[var(--gold)] font-medium shrink-0">
+                            {formatArea(item.areaSqm)} მ²
+                          </span>
+                        )}
+                      </div>
                       
-                      <p className="text-[9px] text-[var(--gold)] uppercase tracking-[0.15em] mt-1 mb-1.5 font-semibold">
+                      <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 mb-1 font-semibold ${statusColor}`}>
                         {subtitle}
                       </p>
                       
-                      {/* 🔴 აღწერა: line-clamp-2, რომ ზედმეტად არ გაიწელოს */}
-                      <p className="text-[11px] text-[var(--fg)]/80 line-clamp-2 leading-relaxed font-serif italic">
-                        {isLoc ? item.descriptionKa : `მფლობელი: ${item.ownerKa || "თავისუფალი"}`}
+                      <p className="text-[11px] text-[var(--fg)]/80 line-clamp-1 leading-relaxed font-serif italic">
+                        {isLoc 
+                          ? item.descriptionKa 
+                          : item.ownerKa 
+                          ? `მფლობელი: ${item.ownerKa}` 
+                          : item.status === "available"
+                          ? "ნაკვეთი თავისუფალია"
+                          : "ნაკვეთი დაჯავშნილია"}
                       </p>
+
+                      {/* 🌱 ნარგავები & 💧 მორწყვის ინდიკატორი */}
+                      {!isLoc && (item as Plot).planted && (
+                        <div className="flex items-center justify-between gap-1.5 mt-1 pt-1 border-t border-[var(--gold)]/20">
+                          <span className="text-[10px] text-[var(--gold-soft)] line-clamp-1 italic flex items-center gap-1">
+                            <span>🌱</span>
+                            <span>{(item as Plot).planted}</span>
+                          </span>
+                          {(item as Plot).isWatered !== undefined && (
+                            <span
+                              title={(item as Plot).isWatered ? "მორწყულია" : "საჭიროებს მორწყვას"}
+                              className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] border shadow-sm ${
+                                (item as Plot).isWatered
+                                  ? "bg-blue-500/25 border-blue-400/60"
+                                  : "bg-amber-500/20 border-amber-400/40 opacity-70"
+                              }`}
+                            >
+                              💧
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      {isLoc && ["cottages", "spa", "pool", "dining", "shops", "events"].includes(item.id) && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedLoc(item as Location);
+                          }}
+                          className="mt-2 self-start inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--gold)]/20 border border-[var(--gold)]/40 text-[var(--gold-soft)] text-[10.5px] font-semibold active:scale-95 transition-all"
+                        >
+                          <span>სერვისები & დეტალები</span>
+                          <span className="text-xs">→</span>
+                        </button>
+                      )}
+
+                      {!isLoc && item.status === "available" && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPlot(item as Plot);
+                            setShowRegister(true);
+                          }}
+                          className="mt-2 self-start inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--gold)] text-black text-[10.5px] font-semibold shadow-md active:scale-95 transition-all"
+                        >
+                          <span>დაინტერესებული ვარ</span>
+                          <span className="text-xs">→</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -330,7 +576,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-0" />
         
-        <div className="absolute top-6 right-24 z-40">
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-40">
           <WeatherWidget />
         </div>
 
@@ -433,9 +679,13 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                 <p className="text-[var(--gold)] text-xs tracking-[0.2em] uppercase">{selectedPlot ? "ნაკვეთი" : "ლოკაცია"}</p>
                 <button onClick={() => { setSelectedPlot(null); setSelectedLoc(null); }} className="text-[var(--fg)]/50 hover:text-[var(--gold)] text-2xl leading-none -mt-1">×</button>
               </div>
-              {selectedLoc?.image && (
-                <div className="relative w-full h-80 shrink-0 bg-[#0e1510] border-b border-[var(--gold)]/20">
-                  <img src={selectedLoc.image} alt={selectedLoc.nameKa} className="absolute inset-0 w-full h-full object-cover" />
+              {(selectedPlot?.image || selectedLoc?.image) && (
+                <div className="relative w-full h-64 shrink-0 bg-[#0e1510] border-b border-[var(--gold)]/20">
+                  <img
+                    src={selectedPlot?.image || selectedLoc?.image}
+                    alt={selectedPlot ? selectedPlot.id : selectedLoc?.nameKa}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 </div>
               )}
               <div className="px-6 pt-4 pb-3 shrink-0">
@@ -447,7 +697,38 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                 {selectedPlot && !showRegister && (
                   <>
                     <div className="flex justify-between items-baseline gap-3 text-sm"><span className="text-[var(--fg)]/50">მფლობელი</span><span className="text-base text-right">{selectedPlot.ownerKa || "—"}</span></div>
-                    <div className="flex justify-between items-baseline gap-3 text-sm"><span className="text-[var(--fg)]/50">ფართობი</span><span className="text-base text-right">{selectedPlot.areaSqm ? `${selectedPlot.areaSqm.toLocaleString("ka-GE")} კვ.მ` : "—"}</span></div>
+                    <div className="flex justify-between items-baseline gap-3 text-sm"><span className="text-[var(--fg)]/50">ფართობი</span><span className="text-base text-right">{selectedPlot.areaSqm ? `${formatArea(selectedPlot.areaSqm)} კვ.მ` : "—"}</span></div>
+                    
+                    {/* 🌱 ნარგავები & 💧 მორწყვის სტატუსი */}
+                    {selectedPlot.planted && (
+                      <div className="pt-3 border-t border-[var(--gold)]/20 space-y-2.5">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-[var(--fg)]/50">ნარგავები</span>
+                          <span className="text-sm text-[var(--gold-soft)] font-serif italic text-right flex items-center gap-1.5">
+                            <span>🌱</span>
+                            <span>{selectedPlot.planted}</span>
+                          </span>
+                        </div>
+
+                        {selectedPlot.isWatered !== undefined && (
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-[var(--fg)]/50">მორწყვის სტატუსი</span>
+                            <div className="flex items-center gap-2">
+                              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border shadow-sm ${
+                                selectedPlot.isWatered
+                                  ? "bg-blue-500/20 border-blue-400/50"
+                                  : "bg-amber-500/15 border-amber-400/40"
+                              }`}>
+                                💧
+                              </span>
+                              <span className={`text-xs font-medium ${selectedPlot.isWatered ? "text-blue-300" : "text-amber-300"}`}>
+                                {selectedPlot.isWatered ? "მორწყულია" : "საჭიროებს მორწყვას"}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     {sector.id === 3 && selectedPlot.status === "available" && (
                       <button onClick={() => setShowRegister(true)} className="w-full py-3 rounded-lg bg-[var(--gold)] text-black font-medium mt-4">დაინტერესებული ვარ</button>
                     )}
@@ -457,6 +738,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
                 {selectedLoc && (
                   <>
                     <p className="text-sm text-[var(--fg)]/85 leading-relaxed">{selectedLoc.descriptionKa}</p>
+                    <LocationExperience location={selectedLoc} />
                   </>
                 )}
               </div>
@@ -464,6 +746,121 @@ export default function SectorMap({ sector }: { sector: Sector }) {
           )}
           </AnimatePresence>
         </div>
+
+      {/* 📱 MOBILE REGISTRATION BOTTOM SHEET */}
+      <AnimatePresence>
+        {isMobile && selectedPlot && showRegister && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowRegister(false)}
+            className="fixed inset-0 z-[200] flex items-end justify-center bg-black/80 backdrop-blur-md p-0"
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg bg-[#131a14] border-t border-x border-[var(--gold)]/40 rounded-t-[2.5rem] shadow-2xl p-6 pb-10 relative max-h-[90vh] overflow-y-auto"
+            >
+              <div className="w-12 h-1 rounded-full bg-[#2d3b31] mx-auto mb-4" />
+              
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <p className="text-[10px] text-[var(--gold)] uppercase tracking-[0.2em] font-semibold">
+                    ნაკვეთი {selectedPlot.id}
+                  </p>
+                  <h3 className="font-serif-display text-2xl text-[var(--gold-soft)]">
+                    დაინტერესება / რეგისტრაცია
+                  </h3>
+                  {selectedPlot.areaSqm && (
+                    <p className="text-xs text-[var(--fg)]/70 mt-0.5">
+                      ფართობი: {formatArea(selectedPlot.areaSqm)} კვ.მ
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(false)}
+                  className="w-8 h-8 rounded-full bg-[#1c261e] border border-[#2d3b31] flex items-center justify-center text-[var(--fg)]/70 hover:text-[var(--gold)] text-xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="h-px bg-gradient-to-r from-transparent via-[var(--gold)]/30 to-transparent my-3" />
+
+              {selectedPlot.image && (
+                <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-[var(--gold)]/30 mb-3 shadow-inner">
+                  <img src={selectedPlot.image} alt={selectedPlot.id} className="w-full h-full object-cover" />
+                </div>
+              )}
+
+              <RegisterForm
+                plotId={selectedPlot.id}
+                onBack={() => setShowRegister(false)}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 📱 MOBILE LOCATION DETAILS BOTTOM SHEET */}
+      <AnimatePresence>
+        {isMobile && selectedLoc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedLoc(null)}
+            className="fixed inset-0 z-[200] flex items-end justify-center bg-black/80 backdrop-blur-md p-0"
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg bg-[#131a14] border-t border-x border-[var(--gold)]/40 rounded-t-[2.5rem] shadow-2xl p-6 pb-12 relative max-h-[90vh] overflow-y-auto"
+            >
+              <div className="w-12 h-1 rounded-full bg-[#2d3b31] mx-auto mb-4" />
+              
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <p className="text-[10px] text-[var(--gold)] uppercase tracking-[0.2em] font-semibold">
+                    {categoryLabels[selectedLoc.category]}
+                  </p>
+                  <h3 className="font-serif-display text-2xl text-[var(--gold-soft)]">
+                    {selectedLoc.nameKa}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedLoc(null)}
+                  className="w-8 h-8 rounded-full bg-[#1c261e] border border-[#2d3b31] flex items-center justify-center text-[var(--fg)]/70 hover:text-[var(--gold)] text-xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              {selectedLoc.image && (
+                <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-[var(--gold)]/30 my-3 shadow-inner">
+                  <img src={selectedLoc.image} alt={selectedLoc.nameKa} className="w-full h-full object-cover" />
+                </div>
+              )}
+
+              <p className="text-xs text-[var(--fg)]/80 leading-relaxed mb-3">
+                {selectedLoc.descriptionKa}
+              </p>
+
+              <LocationExperience location={selectedLoc} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <ProgressWidget />
     </div>
   );

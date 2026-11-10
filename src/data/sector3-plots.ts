@@ -1,11 +1,17 @@
 import type { Plot } from "./sector2-plots";
 
-export const sector3Plots: Plot[] = [
+const houseImages = [
+  "/images/houses/house1.jpg",
+  "/images/houses/house2.jpg",
+  "/images/houses/house3.jpg",
+];
+
+const rawSector3Plots: Plot[] = [
   { id: "N-1",  status: "available", polygon: [
     { x: 1964, y: 426 }, { x: 1816, y: 472 }, { x: 1771, y: 314 }, { x: 1924, y: 262 },
   ]},
   { id: "N-2",  status: "available", polygon: [
-    { x: 1818, y: 472 }, { x: 1665, y: 518 }, { x: 1612, y: 360 }, { x: 1769, y: 296 },
+    { x: 1818, y: 472 }, { x: 1665, y: 520 }, { x: 1612, y: 360 }, { x: 1769, y: 310 },
   ]},
   { id: "N-3",  status: "available", polygon: [
     { x: 1657, y: 528 }, { x: 1508, y: 574 }, { x: 1461, y: 406 }, { x: 1612, y: 360 },
@@ -91,7 +97,7 @@ export const sector3Plots: Plot[] = [
   { id: "N-30", status: "available", polygon: [
     { x: 553, y: 1314 }, { x: 500, y: 1146 }, { x: 651, y: 1096 }, { x: 706, y: 1272 },
   ]},
-  { id: "N-31", status: "sold", ownerKa: "ნოდო ხუციშვილი", ownerEn: "Nodo Khutsishvili", polygon: [
+  { id: "N-31", status: "sold", ownerKa: "ნოდო ხუციშვილი", ownerEn: "Nodo Khutsishvili", areaSqm: 600,polygon: [
     { x: 2191, y: 238 }, { x: 2372, y: 140 }, { x: 2315, y: 32 }, { x: 2132, y: 140 },
   ]},
   { id: "N-32", status: "sold", ownerKa: "არჩილი", ownerEn: "Archil", polygon: [
@@ -104,9 +110,14 @@ export const sector3Plots: Plot[] = [
     { x: 2502, y: 376 }, { x: 2307, y: 468 }, { x: 2356, y: 582 }, { x: 2560, y: 506 },
   ]},
   { id: "N-35", status: "available", polygon: [
-    { x: 2562, y: 508 }, { x: 2358, y: 592 }, { x: 2386, y: 710 }, { x: 2590, y: 638 },
+    { x: 2562, y: 501 }, { x: 2358, y: 585 }, { x: 2386, y: 710 }, { x: 2590, y: 638 },
   ]},
   { id: "N-36", status: "sold", ownerKa: "ზაქრო", ownerEn: "Zakhro", polygon: [
     { x: 2592, y: 638 }, { x: 2386, y: 718 }, { x: 2421, y: 832 }, { x: 2625, y: 770 },
   ]},
 ];
+
+export const sector3Plots: Plot[] = rawSector3Plots.map((plot, i) => ({
+  ...plot,
+  image: plot.image || houseImages[i % houseImages.length],
+}));

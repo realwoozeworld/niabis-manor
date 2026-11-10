@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { sectors } from "@/data/sectors";
+import WeatherWidget from "@/components/WeatherWidget";
 
 // შენი სწორი კოორდინატები (დესკტოპისთვის)
 const hotspots: Record<
@@ -58,9 +59,29 @@ export default function SectorsPage() {
           <h1 className="font-serif-display text-3xl text-[var(--fg)] leading-tight mb-2">
             კეთილი იყოს თქვენი მობრძანება
           </h1>
-          <p className="text-sm text-[var(--fg)]/60">
+          <p className="text-sm text-[var(--fg)]/60 mb-4">
             აირჩიე სასურველი სექტორი.
           </p>
+
+          {/* 🔍 Mobile Search Bar */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#131a14]/90 backdrop-blur-md border border-[var(--gold)]/30 text-[var(--fg)]/50 shadow-lg text-sm active:scale-[0.99] transition-all cursor-pointer"
+          >
+            <svg className="w-4 h-4 text-[var(--gold)] shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+            <span className="text-xs sm:text-sm text-[var(--fg)]/60 font-sans">
+              მოძებნე: სპა, ვენახები, N-15...
+            </span>
+          </button>
+        </div>
+
+        {/* 🌤 Centered Weather Widget */}
+        <div className="relative z-10 flex justify-center px-6 mb-4">
+          <WeatherWidget />
         </div>
 
         {/* 🎠 Horizontal Carousel (Scroll Snap) - შევამცირე სიმაღლე */}
@@ -136,6 +157,10 @@ export default function SectorsPage() {
         <header className="absolute top-6 left-8 z-20 pointer-events-none">
           <img src="/images/logo.png" alt="Niabi's Manor" className="h-20" />
         </header>
+
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-40">
+          <WeatherWidget />
+        </div>
 
         <svg
           viewBox="0 0 2718 1536"

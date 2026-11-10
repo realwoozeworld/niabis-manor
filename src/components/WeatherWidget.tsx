@@ -9,7 +9,7 @@ interface WeatherData {
 
 const LAT = 41.92;
 const LON = 44.42;
-const LOCATION_KA = "ბორტა, კასპი";
+const LOCATION_KA = "ნიაბის მამული";
 
 function weatherDescription(code: number): string {
   if (code === 0) return "მზიანი";
@@ -63,19 +63,19 @@ export default function WeatherWidget() {
   }
 
   return (
-    <div className="flex items-center gap-4 px-5 py-2.5 rounded-full
+    <div className="flex items-center gap-2.5 sm:gap-4 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full
                     border border-[var(--gold)]/40 bg-black/50 backdrop-blur-xl
                     shadow-[0_8px_30px_-10px_rgba(0,0,0,0.6)]">
-      <span className="text-xl">{weatherIcon(data.code)}</span>
-      <div className="flex items-baseline gap-2">
-        <span className="font-serif-display text-2xl text-[var(--gold-soft)]">
+      <span className="text-lg sm:text-xl">{weatherIcon(data.code)}</span>
+      <div className="flex items-baseline gap-1.5 sm:gap-2">
+        <span className="font-serif-display text-xl sm:text-2xl text-[var(--gold-soft)]">
           {data.temp}°
         </span>
-        <span className="text-xs text-[var(--fg)]/80">
+        <span className="text-xs text-[var(--fg)]/80 whitespace-nowrap">
           {weatherDescription(data.code)}
         </span>
       </div>
-      <span className="w-px h-5 bg-[var(--gold)]/30" />
+      <span className="w-px h-4 sm:h-5 bg-[var(--gold)]/30" />
       <span className="text-xs text-[var(--fg)]/60 whitespace-nowrap">
         {LOCATION_KA}
       </span>

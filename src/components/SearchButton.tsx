@@ -13,8 +13,14 @@ export default function SearchButton() {
         setIsOpen(true);
       }
     };
+    const handleOpen = () => setIsOpen(true);
+
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("open-search", handleOpen);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("open-search", handleOpen);
+    };
   }, []);
 
   return (
