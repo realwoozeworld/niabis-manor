@@ -114,9 +114,9 @@ function CottagesExperience() {
         </p>
         <div className="space-y-1.5">
           {[
-            { id: "wine", label: "🍾 საფერავი რეზერვი 2022 ბოთლი ყინულზე", price: "65 ₾" },
-            { id: "cheese", label: "🧀 მამულის ყველის დაფა & თაფლი", price: "40 ₾" },
-            { id: "fireplace", label: "🔥 ბუხრის წინასწარ დანთება", price: "უფასო" },
+            { id: "wine", label: " საფერავი რეზერვი 2022 ბოთლი ყინულზე", price: "65 ₾" },
+            { id: "cheese", label: " მამულის ყველის დაფა & თაფლი", price: "40 ₾" },
+            { id: "fireplace", label: " ბუხრის წინასწარ დანთება", price: "უფასო" },
           ].map((addon) => (
             <label
               key={addon.id}
@@ -151,7 +151,7 @@ function SpaExperience() {
   const rituals = [
     {
       id: 0,
-      title: "🍇 საფერავის ღვინოთერაპია & სკრაბი",
+      title: " საფერავის ღვინოთერაპია & სკრაბი",
       duration: "75 წთ",
       benefits: "ანტიოქსიდანტური დეტოქსი, კანის განახლება",
       details: "ყურძნის წიპწის ექსფოლიაცია, საფერავის თბილი ექსტრაქტის აბაზანა და ზეთით მასაჟი.",
@@ -159,7 +159,7 @@ function SpaExperience() {
     },
     {
       id: 1,
-      title: "🌹 ვარდების ბაღის არომათერაპია",
+      title: " ვარდების ბაღის არომათერაპია",
       duration: "60 წთ",
       benefits: "ღრმა მოდუნება, სტრესის მოხსნა",
       details: "სექტორი 1-ის ბაღში მოკრეფილი ეთერზეთებით დამამშვიდებელი სრული სხეულის მასაჟი.",
@@ -167,7 +167,7 @@ function SpaExperience() {
     },
     {
       id: 2,
-      title: "♨️ მინერალური ჰამამი & საუნა",
+      title: " მინერალური ჰამამი & საუნა",
       duration: "50 წთ",
       benefits: "კუნთების რელაქსაცია, იმუნიტეტი",
       details: "ქვის ორთქლის ოთახი ბუნებრივი მინერალური წყაროს წყლით და მუხის ცოცხით.",
@@ -261,9 +261,9 @@ function PoolExperience() {
         </p>
         <div className="space-y-1.5 text-[11px]">
           {[
-            { time: "08:00 – 11:00", title: "🌅 დილის ენერგია & ცურვა", desc: "მშვიდი მუსიკა და სუფთა მთის ჰაერი" },
-            { time: "12:00 – 18:00", title: "☀️ Pool Lounge & შეზლონგები", desc: "მზის აბაზანები, ცივი წვენები და კოქტეილები" },
-            { time: "18:00 – 22:00", title: "🍷 Sunset & Night Swim", desc: "წყალქვეშა განათება, ვენახის ხედი მზის ჩასვლისას" },
+            { time: "08:00 – 11:00", title: " დილის ენერგია & ცურვა", desc: "მშვიდი მუსიკა და სუფთა მთის ჰაერი" },
+            { time: "12:00 – 18:00", title: " Pool Lounge & შეზლონგები", desc: "მზის აბაზანები, ცივი წვენები და კოქტეილები" },
+            { time: "18:00 – 22:00", title: " Sunset & Night Swim", desc: "წყალქვეშა განათება, ვენახის ხედი მზის ჩასვლისას" },
           ].map((item, i) => (
             <div key={i} className="p-2 rounded-lg bg-black/40 border border-[#2d3b31] flex items-start gap-2.5">
               <span className="text-[10px] text-[var(--gold)] font-mono shrink-0 mt-0.5">
@@ -289,21 +289,21 @@ function DiningExperience() {
 
   const pairings = [
     {
-      dish: "🍖 ხბოს ნეკნები ქვის ღუმელში",
+      dish: " ხბოს ნეკნები ქვის ღუმელში",
       origin: "ადგილობრივი ფერმა, გამომცხვარი ალუბლის შეშით",
-      wine: "🍷 საფერავი რეზერვი 2022",
+      wine: " საფერავი რეზერვი 2022",
       notes: "მუხის კასრში დაძველებული, შავი მოცვისა და სანელებლების არომატით.",
     },
     {
-      dish: "🐟 ტბის კალმახი ბოსტნის მწვანილით",
+      dish: " ტბის კალმახი ბოსტნის მწვანილით",
       origin: "მამულის ტბიდან, ორანჟერიის ტარხუნითა და ლიმონით",
-      wine: "🥂 რქაწითელი ქვევრი 2023",
+      wine: " რქაწითელი ქვევრი 2023",
       notes: "ქარვისფერი, ხავერდოვანი ტანინებითა და თეთრი ბლის ტონებით.",
     },
     {
-      dish: "🧀 ყველის ასორტი & ლეღვის ჯემი",
+      dish: " ყველის ასორტი & ლეღვის ჯემი",
       origin: "საკონსერვო საწარმოს ჯემი, მამულის თაფლი",
-      wine: "🍾 ქისი ამბერი 2023",
+      wine: " ქისი ამბერი 2023",
       notes: "მინდვრის ყვავილებისა და გამომშრალი ხილის მდიდარი ბუკეტი.",
     },
   ];
@@ -312,7 +312,7 @@ function DiningExperience() {
     <div className="space-y-3.5 pt-3 border-t border-[var(--gold)]/20 text-xs">
       {/* Farm-to-Table Badge */}
       <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-800/40 flex items-center gap-2">
-        <span className="text-lg">🌿</span>
+        <span className="text-lg"></span>
         <div>
           <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Zero-Kilometer Farm to Table</p>
           <p className="text-[10px] text-[var(--fg)]/70">
@@ -407,7 +407,7 @@ function ShopsExperience() {
       <div className="space-y-2">
         {/* Wine selector */}
         <div>
-          <label className="text-[10px] text-[var(--fg)]/60 block mb-1">🍷 ღვინის არჩევა:</label>
+          <label className="text-[10px] text-[var(--fg)]/60 block mb-1"> ღვინის არჩევა:</label>
           <div className="grid grid-cols-3 gap-1">
             {["საფერავი რეზერვი", "რქაწითელი ქვევრი", "ქისი ამბერი"].map((item) => (
               <button
@@ -428,7 +428,7 @@ function ShopsExperience() {
 
         {/* Honey selector */}
         <div>
-          <label className="text-[10px] text-[var(--fg)]/60 block mb-1">🍯 თაფლის არჩევა:</label>
+          <label className="text-[10px] text-[var(--fg)]/60 block mb-1"> თაფლის არჩევა:</label>
           <div className="grid grid-cols-2 gap-1">
             {["მინდვრის თაფლი", "მაისის თაფლი"].map((item) => (
               <button
@@ -449,7 +449,7 @@ function ShopsExperience() {
 
         {/* Jam selector */}
         <div>
-          <label className="text-[10px] text-[var(--fg)]/60 block mb-1">🍓 ჯემი / მურაბა:</label>
+          <label className="text-[10px] text-[var(--fg)]/60 block mb-1"> ჯემი / მურაბა:</label>
           <div className="grid grid-cols-2 gap-1">
             {["ლეღვის ჯემი", "ატმის მურაბა"].map((item) => (
               <button
@@ -492,14 +492,14 @@ function EventsExperience() {
       {/* Category Tabs */}
       <div className="flex bg-[#1c261e] p-1 rounded-xl border border-[#2d3b31]">
         {[
-          { key: "wedding", label: "👰 ქორწილები" },
-          { key: "masterclass", label: "🍇 რთველი" },
-          { key: "retreat", label: "💼 Retreat" },
+          { key: "wedding", label: " ქორწილები" },
+          { key: "masterclass", label: " რთველი" },
+          { key: "retreat", label: " Retreat" },
         ].map((t) => (
           <button
             key={t.key}
             type="button"
-            onClick={() => setTab(t.key as any)}
+            onClick={() => setTab(t.key as "wedding" | "retreat" | "masterclass")}
             className={`flex-1 py-1.5 rounded-lg text-[10.5px] transition ${
               tab === t.key
                 ? "bg-[var(--gold)] text-black font-semibold shadow-sm"
