@@ -1,0 +1,53 @@
+Sector,Plot ID,Status,Owner (Ka),Owner (En),Area (Sqm),Planted,Is Watered
+2,"N-1","sold","დავით კაპანაძე","Davit Kapanadze",2058.9,"საფერავის ვენახი",TRUE
+2,"N-2","sold","მზევინარი ბერიძე","Mzevinari Beridze",2027.7,"რქაწითელი & ხეხილი",TRUE
+2,"N-3","sold","გიო უმეკაშვილი","Gio Umekashvili",1001,"ზეთისხილის ბაღი",FALSE
+2,"N-4","sold","ქეთი ჯიხიძე","Qeti Jikhidze",1000,"საფერავი",TRUE
+2,"N-5","sold","ნათია ჭუმბაძე","Natia Chumbadze",1000.3,"",TRUE
+2,"N-6","sold","თამარი უმეკაშვილი","Tamar Umekashvili",1002,"ვაშლის გოლდენი",TRUE
+2,"N-7","sold","ოთარ ქავთარაძე","Otar Kavtaradze",1021,"",TRUE
+2,"N-8","sold","ნინო კაპანაძე","Nino Kapanadze",2261.6,"",TRUE
+2,"N-9","sold","ლევანი / სანდრო","Levan / Sandro",2215.4,"",TRUE
+2,"N-10","sold","დათო ბარსეგიანი","Dato Barsegian",2115,"",TRUE
+2,"N-11","sold","გიორგი ანთაძე","Giorgi Antadze",1101,"",TRUE
+2,"N-12","sold","პაატა მაღლაკელიძე","Paata Maghlakelidze",1101,"",TRUE
+2,"N-13","sold","ლევანი ცინცაძე","Levan Tsintsadze",1014.6,"",TRUE
+2,"N-14","sold","თორნიკე თაბორიძე","Tornike Taboridze",1011.7,"",TRUE
+2,"N-15","sold","ლაშა ანძაველიძე","Lasha Andzavelidze",1005.7,"",TRUE
+2,"N-16","sold","ლაშა ანძაველიძე","Lasha Andzavelidze",1005.2,"ატმის ხეები",FALSE
+3,"N-1","available","","",,"",
+3,"N-2","available","","",,"",
+3,"N-3","available","","",,"",
+3,"N-4","available","","",,"",
+3,"N-5","sold","ვლადიმერ ქუხილავა","Vladimir Qukhilava",514.3,"",
+3,"N-6","sold","ბექა ტერტერაშვილი","Beqa Terterashvili",528,"",
+3,"N-7","reserved","მაია დოლიძე","Maia Dolidze",542,"",
+3,"N-8","reserved","მაია დოლიძე","Maia Dolidze",555,"",
+3,"N-9","sold","თეა მათითაშვილი","Tea Matithashvili",547,"",
+3,"N-10","reserved","","",532,"",
+3,"N-11","reserved","","",498,"",
+3,"N-12","reserved","","",498.5,"",
+3,"N-13","available","","",498.5,"",
+3,"N-14","available","","",498.5,"",
+3,"N-15","available","","",498.5,"",
+3,"N-16","available","","",498.5,"",
+3,"N-17","available","","",498.5,"",
+3,"N-18","available","","",498.5,"",
+3,"N-19","available","","",498.5,"",
+3,"N-20","available","","",498.5,"",
+3,"N-21","available","","",498.5,"",
+3,"N-22","available","","",498.5,"",
+3,"N-23","available","","",498.5,"",
+3,"N-24","available","","",498.5,"",
+3,"N-25","available","","",498.5,"",
+3,"N-26","available","","",498.5,"",
+3,"N-27","reserved","","",498.5,"",
+3,"N-28","available","","",498.5,"",
+3,"N-29","available","","",498.5,"",
+3,"N-30","available","","",498.5,"",
+3,"N-31","sold","ნოდო ხუციშვილი","Nodo Khutsishvili",600,"",
+3,"N-32","sold","არჩილი","Archil",,"",
+3,"N-33","sold","ნინი","Nini",,"",
+3,"N-34","sold","კახა","Kakha",,"",
+3,"N-35","available","","",,"",
+3,"N-36","sold","ზაქრო","Zakhro",,"",

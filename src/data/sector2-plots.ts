@@ -19,12 +19,12 @@ const houseImages = [
 ];
 
 const rawSector2Plots: Plot[] = [
-  { id: "N-1",  ownerKa: "ვერონიკა ბეჟანიშვილი", ownerEn: "Veronika Bezhanishvili",  areaSqm: 2058.9, status: "sold", x: 2294, y: 713, planted: "საფერავის ვენახი", isWatered: true },
+  { id: "N-1",  ownerKa: "დავით კაპანაძე", ownerEn: "Davit Kapanadze",  areaSqm: 2058.9, status: "sold", x: 2294, y: 713, planted: "საფერავის ვენახი", isWatered: true },
   { id: "N-2",  ownerKa: "მზევინარი ბერიძე", ownerEn: "Mzevinari Beridze",  areaSqm: 2027.7, status: "sold", x: 1815, y: 794, planted: "რქაწითელი & ხეხილი", isWatered: true },
   { id: "N-3",  ownerKa: "გიო უმეკაშვილი", ownerEn: "Gio Umekashvili",  areaSqm: 1001,   status: "sold", x: 1412, y: 842, planted: "ზეთისხილის ბაღი", isWatered: false },
-  { id: "N-4",  ownerKa: "ჟეთო ჯოხიძე",      ownerEn: "Zheto Jokhidze", areaSqm: 1000,   status: "sold", x: 1150, y: 880, planted: "საფერავი", isWatered: true },
+  { id: "N-4",  ownerKa: "ქეთი ჯიხიძე",      ownerEn: "Qeti Jikhidze", areaSqm: 1000,   status: "sold", x: 1150, y: 880, planted: "საფერავი", isWatered: true },
   { id: "N-5",  ownerKa: "ნათია ჭუმბაძე",    ownerEn: "Natia Chumbadze", areaSqm: 1000.3, status: "sold", x: 870,  y: 913, planted: " ", isWatered: true  },
-  { id: "N-6",  ownerKa: "ქეთი უმეკაშვილი", ownerEn: "Qeti Umekashvili", areaSqm: 1002,   status: "sold", x: 600,  y: 937, planted: " ", isWatered: true  },
+  { id: "N-6",  ownerKa: "თამარი უმეკაშვილი", ownerEn: "Tamar Umekashvili", areaSqm: 1002,   status: "sold", x: 600,  y:937, planted: "ვაშლის გოლდენი", isWatered:true },
   { id: "N-7",  ownerKa: "ოთარ ქავთარაძე",   ownerEn: "Otar Kavtaradze", areaSqm: 1021,   status: "sold", x: 315,  y: 960, planted: " ", isWatered: true  },
   { id: "N-8",  ownerKa: "ნინო კაპანაძე",    ownerEn: "Nino Kapanadze", areaSqm: 2261.6, status: "sold", x: 640,  y: 480, planted: " ", isWatered: true  },
   { id: "N-9",  ownerKa: "ლევანი / სანდრო",  ownerEn: "Levan / Sandro", areaSqm: 2215.4, status: "sold", x: 970,  y: 390, planted: " ", isWatered: true  },

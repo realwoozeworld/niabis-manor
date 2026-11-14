@@ -81,7 +81,7 @@ export default function SectorsPage() {
 
         {/* 🌤 Centered Weather Widget */}
         <div className="relative z-10 flex justify-center px-6 mb-4">
-          <WeatherWidget />
+          <WeatherWidget size="sm" />
         </div>
 
         {/* 🎠 Horizontal Carousel (Scroll Snap) - შევამცირე სიმაღლე */}

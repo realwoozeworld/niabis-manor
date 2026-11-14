@@ -24,7 +24,12 @@ function formatArea(sqm: number): string {
   return parts.join(".");
 }
 
-export default function SectorMap({ sector }: { sector: Sector }) {
+interface SectorMapProps {
+  sector: Sector;
+  initialPlots?: Plot[];
+}
+
+export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
   const [selectedLoc, setSelectedLoc] = useState<Location | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -45,7 +50,13 @@ export default function SectorMap({ sector }: { sector: Sector }) {
 
   const searchParams = useSearchParams();
 
-  const plots = sector.id === 2 ? sector2Plots : sector.id === 3 ? sector3Plots : [];
+  const plots = initialPlots && initialPlots.length > 0
+    ? initialPlots
+    : sector.id === 2
+    ? sector2Plots
+    : sector.id === 3
+    ? sector3Plots
+    : [];
   const locations = sector.id === 1 ? sector1Locations : [];
   const items = locations.length > 0 ? locations : plots;
 
@@ -204,10 +215,10 @@ export default function SectorMap({ sector }: { sector: Sector }) {
       )}
 
       {/* 📱 MOBILE VIEW */}
-      <div className="md:hidden flex flex-col w-full h-full bg-[#0e1510]">
+      <div className="md:hidden flex flex-col w-full h-full bg-[#0e1510] overflow-y-auto overflow-x-hidden no-scrollbar">
         
          {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-10 pb-2 shrink-0 z-20">
+        <div className="flex items-center justify-between px-5 pt-8 pb-1 shrink-0 z-20">
           <Link href="/sectors" className="w-10 h-10 shrink-0 rounded-full bg-[#1c261e]/80 backdrop-blur-md flex items-center justify-center text-[var(--gold)] border border-[#2d3b31] shadow-lg">
              ←
           </Link>
@@ -232,12 +243,12 @@ export default function SectorMap({ sector }: { sector: Sector }) {
         </div>
 
         {/* 🌤 Centered Weather Widget */}
-        <div className="flex justify-center px-4 pt-1 pb-1 z-20 shrink-0">
-          <WeatherWidget />
+        <div className="flex justify-center px-4 pt-0.5 pb-1 z-20 shrink-0">
+          <WeatherWidget size="sm" />
         </div>
 
         {/* MAP AREA */}
-        <div className="relative w-full h-[48vh] px-4 shrink-0 mt-2">
+        <div className="relative w-full h-[47vh] sm:h-[49vh] px-4 shrink-0 mt-1">
           <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-[#2d3b31] shadow-2xl bg-[#0e1510]">
             <motion.div 
               className="absolute inset-0 w-full h-full"
@@ -413,7 +424,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
         </div>
 
         {/* CAROUSEL AREA */}
-        <div className="flex-1 flex flex-col justify-between pt-6 pb-24 overflow-hidden">
+        <div className="flex-1 flex flex-col justify-between pt-2 pb-24 overflow-hidden">
           
           <div 
             ref={scrollRef}
@@ -552,7 +563,7 @@ export default function SectorMap({ sector }: { sector: Sector }) {
           </div>
 
           {/* Pagination Dots */}
-          <div className="flex items-center justify-center mt-8">
+          <div className="flex items-center justify-center mt-3 mb-1">
             <div className="flex items-center gap-1.5 flex-wrap justify-center px-4">
               {items.map((_, idx) => (
                 <div 

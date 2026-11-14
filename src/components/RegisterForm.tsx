@@ -13,6 +13,7 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [comment, setComment] = useState("");
+  const [website, setWebsite] = useState(""); // Honeypot field for bots
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +24,7 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plotId, name, phone, email, comment }),
+        body: JSON.stringify({ plotId, name, phone, email, comment, website }),
       });
 
       if (!res.ok) throw new Error("Failed");
@@ -102,6 +103,18 @@ export default function RegisterForm({ plotId, onBack }: RegisterFormProps) {
         className="w-full px-3 py-3 rounded-lg bg-black/40 border border-[var(--gold)]/20
                    text-base text-[var(--fg)] placeholder:text-[var(--fg)]/30
                    focus:border-[var(--gold)]/60 focus:outline-none transition"
+      />
+
+      {/* 🤖 Honeypot field invisible to humans, caught by bots */}
+      <input
+        type="text"
+        name="website"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        style={{ display: "none" }}
+        aria-hidden="true"
       />
 
       <textarea
