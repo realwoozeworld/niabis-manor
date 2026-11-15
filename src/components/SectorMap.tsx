@@ -39,16 +39,12 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-    // 🔴 კალიბრაციის რეჟიმი
-  const [calibrateMode, setCalibrateMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.location.search.includes("calibrate=1");
-    }
-    return false;
-  });
-  const [calibPoint, setCalibPoint] = useState<{x: number, y: number} | null>(null);
-
   const searchParams = useSearchParams();
+  const calibrateMode = searchParams.get("calibrate") === "1";
+
+  const [calibPoint, setCalibPoint] = useState<{ x: number; y: number } | null>(null);
+  const desktopSvgRef = useRef<SVGSVGElement>(null);
+  const [calibPoly, setCalibPoly] = useState<{ x: number; y: number }[]>([]);
 
   const plots = initialPlots && initialPlots.length > 0
     ? initialPlots
@@ -69,7 +65,6 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const focusId = searchParams.get("focus");
@@ -120,6 +115,42 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
     const y = Math.round(((e.clientY - rect.top) / rect.height) * VB_H);
     console.log(`{ x: ${x}, y: ${y} },`);
     setCalibPoint({ x, y }); // ვაჩენთ წითელ წერტილს
+  };
+
+  const handleDesktopCalibrateClick = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (!calibrateMode) return;
+
+    const svg = desktopSvgRef.current;
+    const screenCTM = svg?.getScreenCTM();
+    if (!svg || !screenCTM) return;
+
+    const svgP = svg.createSVGPoint();
+    svgP.x = e.clientX;
+    svgP.y = e.clientY;
+    const point = svgP.matrixTransform(screenCTM.inverse());
+    const clickedPoint = { x: Math.round(point.x), y: Math.round(point.y) };
+    console.log(`{ x: ${clickedPoint.x}, y: ${clickedPoint.y} },`);
+
+    const nextPoints = [...calibPoly, clickedPoint];
+    if (nextPoints.length === 4) {
+      const polygonString = `polygon: [ ${nextPoints
+        .map(({ x, y }) => `{ x: ${x}, y: ${y} }`)
+        .join(", ")} ],`;
+      console.log(polygonString);
+      void navigator.clipboard?.writeText(polygonString).catch((error: unknown) => {
+        console.error("Unable to copy calibrated polygon to clipboard:", error);
+      });
+      setCalibPoly([]);
+      return;
+    }
+
+    setCalibPoly(nextPoints);
+  };
+
+  const handleDesktopCalibrationContextMenu = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (!calibrateMode) return;
+    e.preventDefault();
+    setCalibPoly([]);
   };
 
   const cameraAnimation = useMemo(() => {
@@ -587,24 +618,24 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
 
       {/* 💻 DESKTOP VIEW - უცვლელია */}
       <div className="hidden md:block w-full h-full relative">
-        <img
-          src={sector.image}
-          alt={sector.nameEn}
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-0" />
-        
         <div className="absolute top-6 left-1/2 -translate-x-1/2 z-40">
           <WeatherWidget />
         </div>
 
         <svg
+          ref={desktopSvgRef}
           viewBox={`0 0 ${VB_W} ${VB_H}`}
           preserveAspectRatio="xMidYMid slice"
-          className="absolute inset-0 w-full h-full pointer-events-none z-10"
+          onClick={handleDesktopCalibrateClick}
+          onContextMenu={handleDesktopCalibrationContextMenu}
+          className={`absolute inset-0 w-full h-full ${
+            calibrateMode ? "pointer-events-auto cursor-crosshair z-30" : "pointer-events-none z-10"
+          }`}
         >
+          <image href={sector.image} x={0} y={0} width={VB_W} height={VB_H} preserveAspectRatio="none" />
+
           {plots.length > 0 && (
-            <g className="pointer-events-auto">
+            <g className={calibrateMode ? "pointer-events-none" : "pointer-events-auto"}>
               {plots.map((plot) => {
                 const isHovered = hovered === plot.id;
                 const isSelected = selectedPlot?.id === plot.id;
@@ -638,7 +669,7 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
           )}
 
           {locations.length > 0 && (
-            <g className="pointer-events-auto">
+            <g className={calibrateMode ? "pointer-events-none" : "pointer-events-auto"}>
               {locations.map((loc) => {
                 const isHovered = hovered === loc.id;
                 const isSelected = selectedLoc?.id === loc.id;
@@ -669,7 +700,24 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
               })}
             </g>
           )}
+
+          {calibPoly.length > 0 && (
+            <g className="pointer-events-none">
+              {calibPoly.length > 1 && (
+                <polygon
+                  points={calibPoly.map(({ x, y }) => `${x},${y}`).join(" ")}
+                  fill="rgba(255, 0, 0, 0.2)"
+                  stroke="red"
+                  strokeWidth={4}
+                />
+              )}
+              {calibPoly.map(({ x, y }, index) => (
+                <circle key={index} cx={x} cy={y} r={12} fill="red" stroke="white" strokeWidth={3} />
+              ))}
+            </g>
+          )}
         </svg>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-0" />
 
         <div className="absolute top-6 left-8 z-40 flex items-center gap-6 pointer-events-none">
           <Link href="/sectors" className="pointer-events-auto inline-flex px-4 py-2 rounded-full border border-[var(--gold)]/50 bg-black/60 backdrop-blur-md text-sm hover:bg-[var(--gold)] hover:text-black transition">← უკან</Link>

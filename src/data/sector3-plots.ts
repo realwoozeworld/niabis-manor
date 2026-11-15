@@ -8,112 +8,112 @@ const houseImages = [
 
 const rawSector3Plots: Plot[] = [
   { id: "N-1",  status: "available",ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
-    { x: 1964, y: 426 }, { x: 1816, y: 472 }, { x: 1771, y: 314 }, { x: 1924, y: 262 },
+    { x: 1782, y: 465 }, { x: 1737, y: 300 }, { x: 1890, y: 255 }, { x: 1923, y: 425 }, 
   ]},
   { id: "N-2",  status: "available", ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
-    { x: 1818, y: 472 }, { x: 1665, y: 520 }, { x: 1612, y: 360 }, { x: 1769, y: 310 },
+    { x: 1629, y: 520 }, { x: 1586, y: 360 }, { x: 1732, y: 307 }, { x: 1772, y: 472 },
   ]},
   { id: "N-3",  status: "available", ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
-    { x: 1657, y: 528 }, { x: 1508, y: 574 }, { x: 1461, y: 406 }, { x: 1612, y: 360 },
+    { x: 1428, y: 405 }, { x: 1580, y: 365 }, { x: 1617, y: 519 }, { x: 1474, y: 565 },
   ]},
   { id: "N-4",  status: "available", ownerKa: "", ownerEn: "", areaSqm: 501, polygon: [
-    { x: 1504, y: 576 }, { x: 1357, y: 618 }, { x: 1304, y: 456 }, { x: 1461, y: 412 },
+    { x: 1330, y: 613 }, { x: 1281, y: 452 }, { x: 1422, y: 410 }, { x: 1464, y: 565 },
   ]},
   { id: "N-5",  status: "sold", ownerKa: "ვლადიმერ ქუხილავა", ownerEn: "Vladimir Qukhilava", areaSqm: 514.3 , polygon: [
-    { x: 1351, y: 618 }, { x: 1202, y: 674 }, { x: 1143, y: 502 }, { x: 1298, y: 450 },
+    { x: 1171, y: 665 }, { x: 1121, y: 508 }, { x: 1273, y: 457 }, { x: 1321, y: 615 },
   ]},
   { id: "N-6",  status: "sold", ownerKa: "ბექა ტერტერაშვილი", ownerEn: "Beqa Terterashvili", areaSqm: 528, polygon: [
-    { x: 1194, y: 670 }, { x: 1043, y: 716 }, { x: 988, y: 560 }, { x: 1143, y: 512 },
+    { x: 1023, y: 711 }, { x: 972, y: 553 }, { x: 1118, y: 510 }, { x: 1166, y: 663 },
   ]},
   { id: "N-7",  status: "sold", ownerKa:"მაია დოლიძე", ownerEn: "Maia Dolidze", areaSqm: 542, polygon: [
-    { x: 1041, y: 718 }, { x: 891, y: 770 }, { x: 831, y: 602 }, { x: 988, y: 554 },
+    { x: 869, y: 759 }, { x: 820, y: 603 }, { x: 965, y: 560 }, { x: 1011, y: 710 },
   ]},
   { id: "N-8",  status: "sold", ownerKa: "მაია დოლიძე", ownerEn: "Maia Dolidze", areaSqm: 555, polygon: [
-    { x: 882, y: 764 }, { x: 732, y: 814 }, { x: 677, y: 654 }, { x: 831, y: 600 },
+    { x: 714, y: 809 }, { x: 667, y: 656 }, { x: 812, y: 610 }, { x: 858, y: 760 },
   ]},
   { id: "N-9",  status: "sold", ownerKa: "თეა მათითაშვილი", ownerEn: "Tea Matithashvili", areaSqm: 547, polygon: [
-    { x: 728, y: 816 }, { x: 583, y: 864 }, { x: 526, y: 700 }, { x: 673, y: 648 },
+    { x: 568, y: 859 }, { x: 518, y: 706 }, { x: 655, y: 667 }, { x: 702, y: 814 },
   ]},
   { id: "N-10", status: "reserved", ownerKa: "", ownerEn: "",  areaSqm: 532, polygon: [
-    { x: 375, y: 758 }, { x: 434, y: 926 }, { x: 581, y: 868 }, { x: 522, y: 706 },
+    { x: 416, y: 912 }, { x: 368, y: 761 }, { x: 507, y: 715 }, { x: 554, y: 859 },
   ]},
   { id: "N-11", status: "reserved", ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
-    { x: 483, y: 1074 }, { x: 634, y: 1028 }, { x: 583, y: 874 }, { x: 432, y: 932 },
+    { x: 420, y: 923 }, { x: 559, y: 880 }, { x: 607, y: 1024 }, { x: 475, y: 1067 },
   ]},
   { id: "N-12", status: "sold", ownerKa: "ბესო-მაკა სულამანიძე", ownerEn: "beso-maka sulamanidze", areaSqm: 498.5, polygon: [
-    { x: 781, y: 984 }, { x: 634, y: 1028 }, { x: 581, y: 872 }, { x: 730, y: 820 },
+    { x: 571, y: 876 }, { x: 709, y: 828 }, { x: 759, y: 976 }, { x: 621, y: 1021 },
   ]},
   { id: "N-13", status: "sold", ownerKa: "ლევანი ცინცაძე", ownerEn: "Levan Tsintsadze", areaSqm: 498.5, polygon: [
-    { x: 781, y: 980 }, { x: 730, y: 818 }, { x: 889, y: 770 }, { x: 935, y: 932 },
+    { x: 721, y: 825 }, { x: 865, y: 778 }, { x: 910, y: 928 }, { x: 771, y: 971 },
   ]},
   { id: "N-14", status: "sold", ownerKa: "ლევანი ცინცაძე", ownerEn: "Levan Tsintsadze ", areaSqm: 498.5, polygon: [
-    { x: 1037, y: 720 }, { x: 889, y: 766 }, { x: 939, y: 932 }, { x: 1094, y: 884 },
+    { x: 875, y: 775 }, { x: 1018, y: 728 }, { x: 1065, y: 876 }, { x: 927, y: 919 },
   ]},
   { id: "N-15", status: "sold", ownerKa: "ნიკა ტერტერაშვილი", ownerEn: "Nika Terterashvili", areaSqm: 498.5, polygon: [
-    { x: 1194, y: 678 }, { x: 1045, y: 724 }, { x: 1096, y: 884 }, { x: 1245, y: 836 },
+    { x: 1029, y: 727 }, { x: 1171, y: 682 }, { x: 1211, y: 823 }, { x: 1077, y: 871 },
   ]},
   { id: "N-16", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1351, y: 626 }, { x: 1202, y: 676 }, { x: 1251, y: 834 }, { x: 1398, y: 788 },
+    { x: 1182, y: 680 }, { x: 1323, y: 636 }, { x: 1364, y: 780 }, { x: 1223, y: 820 },
   ]},
   { id: "N-17", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1553, y: 736 }, { x: 1398, y: 782 }, { x: 1357, y: 624 }, { x: 1508, y: 578 },
+    { x: 1331, y: 632 }, { x: 1472, y: 581 }, { x: 1515, y: 734 }, { x: 1369, y: 778 },
   ]},
   { id: "N-18", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1659, y: 526 }, { x: 1508, y: 576 }, { x: 1559, y: 734 }, { x: 1700, y: 676 },
+   { x: 1483, y: 579 }, { x: 1624, y: 538 }, { x: 1665, y: 682 }, { x: 1526, y: 730 },
   ]},
   { id: "N-19", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1816, y: 484 }, { x: 1663, y: 530 }, { x: 1702, y: 682 }, { x: 1852, y: 642 },
+    { x: 1636, y: 538 }, { x: 1773, y: 489 }, { x: 1808, y: 632 }, { x: 1675, y: 680 },
   ]},
   { id: "N-20", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1967, y: 436 }, { x: 1818, y: 484 }, { x: 1854, y: 634 }, { x: 1997, y: 594 },
+    { x: 1782, y: 489 }, { x: 1920, y: 443 }, { x: 1959, y: 589 }, { x: 1820, y: 634 },
   ]},
   { id: "N-21", status: "sold", ownerKa: "ხათუნა ხელაია", ownerEn: "Khatuna Khelaia", areaSqm: 498.5, polygon: [
-    { x: 2055, y: 836 }, { x: 1909, y: 884 }, { x: 1859, y: 724 }, { x: 2013, y: 674 },
+    { x: 1816, y: 716 }, { x: 1870, y: 887 }, { x: 2023, y: 835 }, { x: 1976, y: 672 },
   ]},
   { id: "N-22", status: "sold", ownerKa: "სალომე ღუღუნიშვილი", ownerEn: "Salome Gugunishvili", areaSqm: 498.5, polygon: [
-    { x: 1907, y: 880 }, { x: 1755, y: 938 }, { x: 1700, y: 774 }, { x: 1850, y: 728 },
+    { x: 1725, y: 935 }, { x: 1675, y: 766 }, { x: 1815, y: 722 }, { x: 1866, y: 885 },
   ]},
   { id: "N-23", status: "sold", ownerKa: "მარინა კაზანცევა", ownerEn: "Marina Kazanceva", areaSqm: 498.5, polygon: [
-    { x: 1755, y: 936 }, { x: 1616, y: 980 }, { x: 1571, y: 816 }, { x: 1708, y: 778 },
+    { x: 1534, y: 811 }, { x: 1668, y: 775 }, { x: 1715, y: 935 }, { x: 1589, y: 976 },
   ]},
   { id: "N-24", status: "sold", ownerKa: "რომან ოვჩარენკო", ownerEn: "Roman Ovcarenko", areaSqm:498.5, polygon: [
-    { x:1618, y:984 }, { x:1469, y:1034 }, { x:1416, y:878 }, { x:1563, y:814 },
+    { x: 1438, y: 1023 }, { x: 1391, y: 863 }, { x: 1526, y: 821 }, { x: 1570, y: 978 },
   ]},
   { id: "N-25", status: "sold", ownerKa: "რომან ოვჩარენკო", ownerEn: "Roman Ovcarenko", areaSqm: 498.5, polygon: [
-    { x: 1471, y: 1032 }, { x: 1318, y: 1072 }, { x: 1269, y: 912 }, { x: 1418, y: 872 },
+    { x: 1295, y: 1074 }, { x: 1245, y: 912 }, { x: 1383, y: 869 }, { x: 1426, y: 1021 },
   ]},
   { id: "N-26", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1316, y: 1078 }, { x: 1164, y: 1128 }, { x: 1111, y: 960 }, { x: 1263, y: 912 },
+    { x: 1085, y: 962 }, { x: 1233, y: 919 }, { x: 1280, y: 1072 }, { x: 1132, y: 1119 },
   ]},
   { id: "N-27", status: "reserved", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 1155, y: 1126 }, { x: 1009, y: 1174 }, { x: 960, y:1016 }, { x:1107, y:964 },
+    { x: 939, y: 1009 }, { x: 1075, y: 971 }, { x: 1120, y: 1124 }, { x: 986, y: 1164 },
   ]},
   { id: "N-28", status: "sold", ownerKa: "ინა პაიჭაძე", ownerEn: "Ina Paichadze", areaSqm: 498.5, polygon: [
-    { x: 999, y: 1174 }, { x: 858, y: 1220 }, { x: 805, y: 1056 }, { x: 952, y: 1012 },
+    { x: 784, y: 1054 }, { x: 929, y: 1016 }, { x: 974, y: 1169 }, { x: 832, y: 1220 },
   ]},
   { id: "N-29", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 850, y: 1224 }, { x: 705, y: 1264 }, { x: 654, y: 1100 }, { x: 801, y: 1054 },
+    { x: 643, y: 1098 }, { x: 777, y: 1064 }, { x: 829, y: 1219 }, { x: 691, y: 1260 },
   ]},
   { id: "N-30", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
-    { x: 553, y: 1314 }, { x: 500, y: 1146 }, { x: 651, y: 1096 }, { x: 706, y: 1272 },
+    { x: 494, y: 1145 }, { x: 630, y: 1103 }, { x: 676, y: 1263 }, { x: 537, y: 1313 },
   ]},
   { id: "N-31", status: "sold", ownerKa: "ნოდო ხუციშვილი", ownerEn: "Nodo Khutsishvili", areaSqm: 600 , polygon: [
-    { x: 2191, y: 238 }, { x: 2372, y: 140 }, { x: 2315, y: 32 }, { x: 2132, y: 140 },
+    { x: 2086, y: 135 }, { x: 2205, y: 59 }, { x: 2282, y: 63 }, { x: 2325, y: 138 }, { x: 2145, y: 228 }
   ]},
   { id: "N-32", status: "sold", ownerKa: "არჩილი", ownerEn: "Archil", areaSqm: 570, polygon: [
-    { x: 2378, y: 142 }, { x: 2189, y: 238 }, { x: 2246, y: 350 }, { x: 2434, y: 254 },
+    { x: 2148, y: 240 }, { x: 2325, y: 145 }, { x: 2386, y: 255 }, { x: 2205, y: 347 },
   ]},
   { id: "N-33", status: "sold", ownerKa: "ნინი", ownerEn: "Nini", areaSqm: 573, polygon: [
-    { x: 2429, y: 254 }, { x: 2244, y: 354 }, { x: 2299, y: 464 }, { x: 2500, y: 376 },
+    { x: 2210, y: 355 }, { x: 2384, y: 264 }, { x: 2441, y: 372 }, { x: 2262, y: 464 },
   ]},
   { id: "N-34", status: "sold", ownerKa: "კახა", ownerEn: "Kakha", areaSqm: 605, polygon: [
-    { x: 2502, y: 376 }, { x: 2307, y: 468 }, { x: 2356, y: 582 }, { x: 2560, y: 506 },
+    { x: 2264, y: 472 }, { x: 2446, y: 386 }, { x: 2503, y: 507 }, { x: 2313, y: 586 },
   ]},
   { id: "N-35", status: "sold", ownerKa: "ვაჟა", ownerEn: "Vazha", areaSqm: 550, polygon: [
-    { x: 2562, y: 501 }, { x: 2358, y: 585 }, { x: 2386, y: 710 }, { x: 2590, y: 638 },
+    { x: 2319, y: 593 }, { x: 2503, y: 522 }, { x: 2542, y: 634 }, { x: 2353, y: 711 },
   ]},
   { id: "N-36", status: "sold", ownerKa: "ზაქრო", ownerEn: "Zakhro", areaSqm: 556, polygon: [
-    { x: 2592, y: 638 }, { x: 2386, y: 718 }, { x: 2421, y: 832 }, { x: 2625, y: 770 },
+    { x: 2355, y: 722 }, { x: 2537, y: 648 }, { x: 2570, y: 768 }, { x: 2380, y: 833 },
   ]},
 ];
 
