@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   },
   description:
     "უნიკალური საცხოვრებელი და აგრო-ტურისტული კომპლექსი საქართველოში — ვენახები, ქვის არქიტექტურა და ეკოლოგიური მეურნეობა.",
-  openGraph: {
+  icons: {
+    icon: "/images/icon.png", // ან "/images/favicon.png"
+    apple: "/images/icon.png", // iPhone-ზე Home Screen-ზე დამატებისას
+  },
+    openGraph: {
     title: "ნიაბის მამული · Niabi's Manor",
     description: "საცხოვრებელი და აგრო-ტურისტული კომპლექსი საქართველოში",
     url: "https://niabiestate.ge",
