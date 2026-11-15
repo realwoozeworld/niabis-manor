@@ -27,9 +27,10 @@ function formatArea(sqm: number): string {
 interface SectorMapProps {
   sector: Sector;
   initialPlots?: Plot[];
+  initialLocations?: Location[];
 }
 
-export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
+export default function SectorMap({ sector, initialPlots, initialLocations }: SectorMapProps) {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
   const [selectedLoc, setSelectedLoc] = useState<Location | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -53,7 +54,11 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
     : sector.id === 3
     ? sector3Plots
     : [];
-  const locations = sector.id === 1 ? sector1Locations : [];
+  const locations = initialLocations && initialLocations.length > 0
+    ? initialLocations
+    : sector.id === 1
+    ? sector1Locations
+    : [];
   const items = locations.length > 0 ? locations : plots;
 
   const prevSector = sector.id > 1 ? sector.id - 1 : null;

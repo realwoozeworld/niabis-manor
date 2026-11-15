@@ -1,122 +1,59 @@
+import { supabase } from "@/lib/supabase";
 import { sector2Plots, type Plot } from "@/data/sector2-plots";
 import { sector3Plots } from "@/data/sector3-plots";
+import { sector1Locations, type Location } from "@/data/sector1-locations";
 
-export interface SheetPlotUpdate {
-  sector: number;
-  id: string;
-  ownerKa?: string;
-  ownerEn?: string;
-  areaSqm?: number;
-  status?: "available" | "sold" | "reserved";
-  planted?: string;
-  isWatered?: boolean;
-}
-
-/**
- * Parses CSV text exported from Google Sheets
- */
-function parseCSV(csvText: string): SheetPlotUpdate[] {
-  const lines = csvText.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-  if (lines.length < 2) return [];
-
-  // Parse header
-  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ""));
-  const sectorIdx = headers.findIndex((h) => h.includes("sector") || h.includes("სექტორი"));
-  const idIdx = headers.findIndex((h) => h.includes("plot") || h.includes("id") || h.includes("ნაკვეთი"));
-  const ownerKaIdx = headers.findIndex((h) => (h.includes("owner") && h.includes("ka")) || h.includes("მფლობელი"));
-  const ownerEnIdx = headers.findIndex((h) => h.includes("owner") && h.includes("en"));
-  const areaIdx = headers.findIndex((h) => h.includes("area") || h.includes("ფართობი") || h.includes("sqm"));
-  const statusIdx = headers.findIndex((h) => h.includes("status") || h.includes("სტატუსი"));
-  const plantedIdx = headers.findIndex((h) => h.includes("planted") || h.includes("ნარგავები"));
-  const wateredIdx = headers.findIndex((h) => h.includes("water") || h.includes("მორწყვა"));
-
-  const updates: SheetPlotUpdate[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    // Regex to handle comma-separated values with potential quotes
-    const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map((cell) => cell.replace(/^"|"$/g, "").trim());
-
-    const sectorNum = sectorIdx !== -1 ? parseInt(row[sectorIdx], 10) : 0;
-    const rawId = idIdx !== -1 ? row[idIdx] : "";
-    if (!rawId) continue;
-
-    // Standardize ID format: e.g. "1" or "N1" -> "N-1"
-    const id = rawId.startsWith("N-") ? rawId : `N-${rawId.replace(/^N-?/, "")}`;
-
-    const update: SheetPlotUpdate = {
-      sector: sectorNum,
-      id,
-    };
-
-    if (ownerKaIdx !== -1 && row[ownerKaIdx] !== undefined) update.ownerKa = row[ownerKaIdx];
-    if (ownerEnIdx !== -1 && row[ownerEnIdx] !== undefined) update.ownerEn = row[ownerEnIdx];
-    if (areaIdx !== -1 && row[areaIdx]) {
-      const areaVal = parseFloat(row[areaIdx].replace(",", "."));
-      if (!isNaN(areaVal)) update.areaSqm = areaVal;
-    }
-    if (statusIdx !== -1 && row[statusIdx]) {
-      const st = row[statusIdx].toLowerCase();
-      if (st.includes("sold") || st.includes("გაყიდ")) update.status = "sold";
-      else if (st.includes("reserv") || st.includes("ჯავშ")) update.status = "reserved";
-      else if (st.includes("avail") || st.includes("თავისუფ")) update.status = "available";
-    }
-    if (plantedIdx !== -1 && row[plantedIdx] !== undefined) update.planted = row[plantedIdx];
-    if (wateredIdx !== -1 && row[wateredIdx] !== undefined) {
-      const w = row[wateredIdx].toLowerCase();
-      update.isWatered = w === "true" || w === "1" || w.includes("კი") || w.includes("დიახ") || w.includes("მორწყულ");
-    }
-
-    updates.push(update);
-  }
-
-  return updates;
-}
-
-/**
- * Fetches live plot data from Google Sheets if GOOGLE_SHEET_CSV_URL is set,
- * and merges with the hardcoded base plots (keeping geometry/coordinates intact).
- */
 export async function getLiveSectorPlots(sectorId: number): Promise<Plot[]> {
   const basePlots = sectorId === 2 ? sector2Plots : sectorId === 3 ? sector3Plots : [];
-  const sheetUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_CSV_URL || process.env.GOOGLE_SHEETS_CSV_URL;
-
-  if (!sheetUrl) {
-    return basePlots;
-  }
+  if (basePlots.length === 0) return [];
 
   try {
-    const res = await fetch(sheetUrl, {
-      next: { revalidate: 60 }, // Cache on edge/server, revalidate every 60 seconds
-    });
+    const { data, error } = await supabase
+      .from("plots")
+      .select("*")
+      .eq("sector_id", sectorId);
 
-    if (!res.ok) {
-      console.warn("Failed to fetch Google Sheet, falling back to local data:", res.statusText);
-      return basePlots;
-    }
-
-    const csvText = await res.text();
-    const updates = parseCSV(csvText);
-
-    if (updates.length === 0) return basePlots;
+    if (error || !data || data.length === 0) return basePlots;
 
     return basePlots.map((plot) => {
-      const match = updates.find(
-        (u) => (u.sector === sectorId || u.sector === 0) && u.id.toLowerCase() === plot.id.toLowerCase()
-      );
-      if (!match) return plot;
+      const dbPlot = data.find((d) => d.id.toLowerCase() === plot.id.toLowerCase());
+      if (!dbPlot) return plot;
 
       return {
         ...plot,
-        ...(match.ownerKa !== undefined && { ownerKa: match.ownerKa }),
-        ...(match.ownerEn !== undefined && { ownerEn: match.ownerEn }),
-        ...(match.areaSqm !== undefined && { areaSqm: match.areaSqm }),
-        ...(match.status !== undefined && { status: match.status }),
-        ...(match.planted !== undefined && { planted: match.planted }),
-        ...(match.isWatered !== undefined && { isWatered: match.isWatered }),
+        status: dbPlot.status ?? plot.status,
+        ownerKa: dbPlot.owner_ka ?? plot.ownerKa,
+        ownerEn: dbPlot.owner_en ?? plot.ownerEn,
+        areaSqm: dbPlot.area_sqm != null ? Number(dbPlot.area_sqm) : plot.areaSqm,
+        planted: dbPlot.planted ?? plot.planted,
+        isWatered: dbPlot.is_watered ?? plot.isWatered,
+        ...(dbPlot.price != null && { price: Number(dbPlot.price) }),
       };
     });
-  } catch (error) {
-    console.error("Error fetching live Google Sheet plots:", error);
+  } catch {
     return basePlots;
+  }
+}
+
+export async function getLiveSector1Locations(): Promise<Location[]> {
+  try {
+    const { data, error } = await supabase.from("locations").select("*");
+    if (error || !data || data.length === 0) return sector1Locations;
+
+    return sector1Locations.map((loc) => {
+      const dbLoc = data.find((d) => d.id === loc.id);
+      if (!dbLoc) return loc;
+
+      return {
+        ...loc,
+        nameKa: dbLoc.name_ka || loc.nameKa,
+        nameEn: dbLoc.name_en || loc.nameEn,
+        descriptionKa: dbLoc.description_ka ?? loc.descriptionKa,
+        descriptionEn: dbLoc.description_en ?? loc.descriptionEn,
+        features: Array.isArray(dbLoc.features) ? dbLoc.features : loc.features,
+      };
+    });
+  } catch {
+    return sector1Locations;
   }
 }
