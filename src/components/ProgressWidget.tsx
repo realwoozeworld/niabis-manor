@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ProgressWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const progress = 50; // 🔴 აქ შეგიძლია შეცვალო პროცენტი
+  const progress = 65; // 🔴 აქ შეგიძლია შეცვალო პროცენტი
 
   return (
     <motion.div
