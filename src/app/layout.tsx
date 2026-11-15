@@ -3,6 +3,7 @@ import "./globals.css";
 import LoadingScreen from "@/components/LoadingScreen";
 import SearchButton from "@/components/SearchButton";
 import SocialButtons from "@/components/SocialButtons";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "ნიაბის მამული · Niabi's Manor",
@@ -24,6 +25,7 @@ export default function RootLayout({
 
         {/* 📱 ეს ღილაკები ყველა გვერდზე გამოჩნდება მობილურზე */}
         <SocialButtons />
+        <Analytics />
       </body>
     </html>
   );
