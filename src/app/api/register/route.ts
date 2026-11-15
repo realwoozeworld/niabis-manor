@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazily created so the constructor runs at request time (not build time)
+// This prevents a build crash when RESEND_API_KEY is not set in the CI environment.
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is not set");
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 // Simple memory-based rate limiting (per IP: max 5 requests per 10 minutes)
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
@@ -84,7 +95,7 @@ export async function POST(request: Request) {
     const safeComment = comment ? escapeHtml(String(comment).trim()) : "—";
 
     // 5. Send Email via Resend
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: "onboarding@resend.dev",
       to: ["sunion31@gmail.com"],
       subject: `🏡 ახალი რეგისტრაცია — ნაკვეთი ${safePlotId}`,
