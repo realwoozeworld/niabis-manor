@@ -101,8 +101,15 @@ export default function SectorMap({ sector, initialPlots }: SectorMapProps) {
 
   const isMobileSector1 = isMobile && sector.id === 1;
   const currentImage = isMobileSector1 ? "/images/sector-1-mobile.jpg" : sector.image;
-  const VB_W = isMobileSector1 ? 1080 : (sector.id === 1 ? 2752 : 2804);
-  const VB_H = isMobileSector1 ? 1920 : (sector.id === 1 ? 1900 : 1536);
+  // Accurate image dimensions for coordinate conversion
+  const dimensions: Record<number, { w: number; h: number }> = {
+    1: { w: 2752, h: 1536 },
+    2: { w: 2798, h: 1536 },
+    3: { w: 2752, h: 1536 },
+  };
+  const VB_W = isMobileSector1 ? 1080 : dimensions[sector.id]?.w ?? 2752;
+  const VB_H = isMobileSector1 ? 1920 : dimensions[sector.id]?.h ?? 1536;
+
 
   // 🔴 კალიბრაციის ფუნქცია
   const handleCalibrateClick = (e: React.MouseEvent<HTMLImageElement>) => {
