@@ -34,7 +34,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Modern cold storage facility for year-round preservation.",
     features: ["მთელი წლის შენახვა", "თანამედროვე მოწყობილობა"],
     image: "/images/sector1/cold-storage.jpg",
-    points: [{ x: 319, y: 375 }],
+    points: [{ x: 325, y: 200 }],
     mobilePoints: [{ x: 65, y: 700 }],
   },
   {
@@ -46,7 +46,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Canning production space — vegetables, fruit, jams and sauces.",
     features: ["ჯემები", "საწებლები", "კონსერვები"],
     image: "/images/sector1/canning.jpg",
-    points: [{ x: 212, y: 510 }],
+    points: [{ x: 220, y: 325 }],
     mobilePoints: [{ x: 18, y: 770 }],
   },
   {
@@ -58,7 +58,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Three fruit orchards — apples, pears, peaches, apricots, plums and cherries.",
     features: ["სეზონური ხილი", "ადგილობრივი ჯიშები"],
     image: "/images/sector1/orchards.jpg",
-    points: [{ x: 450, y: 580 }, { x: 680, y: 770 }, { x: 870, y: 913 }],
+    points: [{ x: 430, y: 400 }, { x: 680, y: 590 }, { x: 880, y: 725 }],
     mobilePoints: [{ x: 117, y: 780 }],
   },
   {
@@ -70,7 +70,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Three glass greenhouses — year-round flowers and vegetables.",
     features: ["მთელი წლის მოსავალი", "ეკოტურები"],
     image: "/images/sector1/greenhouses.jpg",
-    points: [{ x: 630, y: 649 }, { x: 800, y: 823 }, { x: 963, y: 1000 }],
+    points: [{ x: 660, y: 425 }, { x: 785, y: 660 }, { x: 890, y: 915 }],
     mobilePoints: [{ x: 190, y: 840 }], 
   },
   {
@@ -82,7 +82,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Rose garden combined with aromatic herbs.",
     features: ["ვარდები", "მწვანილი", "არომათერაპია"],
     image: "/images/sector1/rose-garden.jpg",
-    points: [{ x: 1072, y: 1079 }],
+    points: [{ x: 1075, y: 900 }],
     mobilePoints: [{ x: 400, y: 1020 }],
   },
   {
@@ -94,7 +94,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Two open-air vegetable gardens on stone terraces.",
     features: ["ეკო-ბოსტანი", "სეზონური ბოსტნეული"],
     image: "/images/sector1/open-garden.jpg",
-    points: [{ x: 1220, y: 1250 }, { x: 1470, y: 1250 }],
+    points: [{ x: 1215, y: 1075 }, { x: 1470, y: 1075 }],
     mobilePoints: [{ x: 470, y: 1100 }],
   },
   {
@@ -106,7 +106,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "8000 years of Georgian winemaking tradition.",
     features: ["საფერავი", "რქაწითელი", "ღვინის დეგუსტაცია"],
     image: "/images/sector1/vineyards.jpg",
-    points: [{ x: 1800, y: 1100 }],
+    points: [{ x: 1800, y: 910 }],
     mobilePoints: [{ x: 585, y: 1100 }],
   },
   {
@@ -118,7 +118,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Guest cottages nestled in nature.",
     features: ["სასტუმრო", "ბუნებაში", "ქვის არქიტექტურა"],
     image: "/images/sector1/cottages.jpg",
-    points: [{ x: 1846, y: 1260 }],
+    points: [{ x: 1846, y: 1075 }],
     mobilePoints: [{ x: 755, y: 1100 }],
   },
   {
@@ -130,7 +130,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Modern spa center — sauna, hammam, massage.",
     features: ["საუნა", "ჰამამი", "მასაჟი"],
     image: "/images/sector1/spa.jpg",
-    points: [{ x: 2012, y: 1100 }],
+    points: [{ x: 2010, y: 920 }],
     mobilePoints: [{ x: 830, y: 1028 }],
   },
   {
@@ -142,7 +142,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Indoor pool open year-round.",
     features: ["შიდა აუზი", "თბილი წყალი"],
     image: "/images/sector1/pool.jpg",
-    points: [{ x: 2097, y: 1136 }],
+    points: [{ x: 2090, y: 920 }],
     mobilePoints: [{ x: 870, y: 1030 }],
   },
   {
@@ -154,7 +154,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Restaurant with farm-to-table menu.",
     features: ["ფერმა-მაგიდა", "ქართული სამზარეულო"],
     image: "/images/sector1/dining.jpg",
-    points: [{ x: 2210, y: 1130 }],
+    points: [{ x: 2200, y: 945 }],
     mobilePoints: [{ x: 925, y: 1030 }],
   },
   {
@@ -166,7 +166,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Artificial lake for relaxation and fishing.",
     features: ["თევზაობა", "დასვენება"],
     image: "/images/sector1/lake.jpg",
-    points: [{ x: 2339, y: 1100 }],
+    points: [{ x: 2330, y: 920 }],
     mobilePoints: [{ x: 980, y: 1030 }],
   },
   {
@@ -178,7 +178,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Shop selling estate-produced goods.",
     features: ["ღვინო", "ჯემი", "თაფლი", "სუვენირები"],
     image: "/images/sector1/shops.jpg",
-    points: [{ x: 2320, y: 1210 }],
+    points: [{ x: 2320, y: 1030 }],
     mobilePoints: [{ x: 975, y: 1080 }],
   },
   {
@@ -190,7 +190,7 @@ export const sector1Locations: Location[] = [
     descriptionEn: "Open-air venue for weddings and wine tastings.",
     features: ["ქორწილები", "დეგუსტაცია", "კორპორატიული"],
     image: "/images/sector1/events.jpg",
-    points: [{ x: 2115, y: 1225 }],
+    points: [{ x: 2115, y: 1045 }],
     mobilePoints: [{ x: 880, y: 1080 }],
   },
 ];
