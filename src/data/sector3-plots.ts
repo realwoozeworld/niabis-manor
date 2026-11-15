@@ -34,10 +34,10 @@ const rawSector3Plots: Plot[] = [
   { id: "N-9",  status: "sold", ownerKa: "თეა მათითაშვილი", ownerEn: "Tea Matithashvili", areaSqm: 547, polygon: [
     { x: 568, y: 859 }, { x: 518, y: 706 }, { x: 655, y: 667 }, { x: 702, y: 814 },
   ]},
-  { id: "N-10", status: "reserved", ownerKa: "", ownerEn: "",  areaSqm: 532, polygon: [
+  { id: "N-10", status: "available", ownerKa: "", ownerEn: "",  areaSqm: 532, polygon: [
     { x: 416, y: 912 }, { x: 368, y: 761 }, { x: 507, y: 715 }, { x: 554, y: 859 },
   ]},
-  { id: "N-11", status: "reserved", ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
+  { id: "N-11", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498, polygon: [
     { x: 420, y: 923 }, { x: 559, y: 880 }, { x: 607, y: 1024 }, { x: 475, y: 1067 },
   ]},
   { id: "N-12", status: "sold", ownerKa: "ბესო-მაკა სულამანიძე", ownerEn: "beso-maka sulamanidze", areaSqm: 498.5, polygon: [
@@ -85,7 +85,7 @@ const rawSector3Plots: Plot[] = [
   { id: "N-26", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
     { x: 1085, y: 962 }, { x: 1233, y: 919 }, { x: 1280, y: 1072 }, { x: 1132, y: 1119 },
   ]},
-  { id: "N-27", status: "reserved", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
+  { id: "N-27", status: "available", ownerKa: "", ownerEn: "", areaSqm: 498.5, polygon: [
     { x: 939, y: 1009 }, { x: 1075, y: 971 }, { x: 1120, y: 1124 }, { x: 986, y: 1164 },
   ]},
   { id: "N-28", status: "sold", ownerKa: "ინა პაიჭაძე", ownerEn: "Ina Paichadze", areaSqm: 498.5, polygon: [
