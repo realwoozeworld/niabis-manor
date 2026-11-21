@@ -25,6 +25,11 @@ const hotspots: Record<
     labelX: 1360,
     labelY: 780,
   },
+  4: {
+    points: "1426,56 1693,158 1885,271 2004,410 2256,472 2372,496 2381,638 2537,622 2746,626 2746,1102 2325,1076 2235,1180 2022,1277 1795,1339 1701,1045 1601,697 1531,380",
+    labelX: 1850,
+    labelY: 750,
+  },
 };
 
 const sectorDescriptions: Record<number, string> = {
@@ -114,7 +119,7 @@ export default function SectorsPage() {
                   {sectorDescriptions[sector.id]}
                 </p>
                 <div className="flex items-center gap-2 text-[var(--gold)] text-sm font-medium">
-                  <span>გამოკვლევა</span>
+                  <span>{sector.id === 4 ? "დამუშავების პროცესშია" : "გამოკვლევა"}</span>
                   <span className="w-6 h-6 rounded-full bg-[var(--gold)]/20 flex items-center justify-center">→</span>
                 </div>
               </div>
