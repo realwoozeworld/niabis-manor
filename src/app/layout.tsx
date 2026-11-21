@@ -14,6 +14,16 @@ export const metadata: Metadata = {
   },
   description:
     "უნიკალური საცხოვრებელი და აგრო-ტურისტული კომპლექსი საქართველოში — ვენახები, ქვის არქიტექტურა და ეკოლოგიური მეურნეობა.",
+  keywords: [
+    "ნიაბის მამული",
+    "ნიაბი",
+    "მიწის ნაკვეთები ნიაბში",
+    "მიწა კასპში",
+    "სააგარაკე ნაკვეთები",
+    "Niabi's Manor",
+    "Niabi Estate",
+    "land for sale Georgia",
+  ],
   icons: {
     icon: "/images/icon.png", // ან "/images/favicon.png"
     apple: "/images/icon.png", // iPhone-ზე Home Screen-ზე დამატებისას
