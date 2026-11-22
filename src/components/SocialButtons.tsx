@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function SocialButtons() {
   const [isVisible, setIsVisible] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     // ვუსმენთ ივენთებს, რომლებსაც SectorMap გამოგზავნის
@@ -18,6 +20,8 @@ export default function SocialButtons() {
       window.removeEventListener("show-social-buttons", show);
     };
   }, []);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <div 

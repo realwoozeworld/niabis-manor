@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import SearchModal from "./SearchModal";
 
 export default function SearchButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -22,6 +24,8 @@ export default function SearchButton() {
       window.removeEventListener("open-search", handleOpen);
     };
   }, []);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>
