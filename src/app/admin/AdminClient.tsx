@@ -529,7 +529,7 @@ function PlotCard({
             }`}
           >
             <span>💧</span>
-            <span>{isWatered ? "მორწყული" : "გამხმარი"}</span>
+            <span>{isWatered ? "მორწყული" : "არ არის მორწყული"}</span>
           </button>
         </div>
       </div>
